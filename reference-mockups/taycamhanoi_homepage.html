@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAYCAMHANOI - Chuyên Tay Cầm & Phụ Kiện Gaming Chính Hãng</title>
+  <meta name="description" content="TAYCAMHANOI - Chuyên cung cấp tay cầm gaming chính hãng Gamesir, Flydigi, Aolion, Xbox, PlayStation. Freeship toàn quốc, bảo hành 12 tháng.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+    .group:hover .group-hover\:block { display: block; }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+  <!-- Top Bar -->
+  <div class="bg-blue-900 text-white text-xs py-2 text-center tracking-wide">
+    🎮 FREESHIP TOÀN QUỐC | BẢO HÀNH CHÍNH HÃNG 12 THÁNG | HOTLINE: 090.xxx.xxxx
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 shrink-0">
+        <div class="w-12 h-12 flex items-center justify-center">
+          <img src="https://via.placeholder.com/48x48/1d4ed8/ffffff?text=TC" alt="TAYCAMHANOI" class="w-full h-full object-contain rounded-lg">
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-tight">
+            <span class="text-blue-700">TAYCAM</span><span class="text-red-600">HANOI</span>
+          </h1>
+          <p class="text-[10px] text-gray-500 -mt-1 tracking-widest">CHUYÊN TAY CẦM & PHỤ KIỆN GAMING</p>
+        </div>
+      </a>
+
+      <!-- Search -->
+      <div class="flex-1 max-w-xl mx-4 lg:mx-8 hidden md:block">
+        <div class="relative">
+          <input type="text" placeholder="Tìm kiếm tay cầm, phụ kiện gaming..." 
+            class="w-full pl-4 pr-12 py-2.5 border-2 border-gray-200 rounded-full text-sm focus:border-blue-600 focus:outline-none transition-colors">
+          <button class="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-700 text-white p-2 rounded-full hover:bg-blue-800 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-4 lg:gap-5">
+        <button class="hidden sm:flex flex-col items-center text-gray-600 hover:text-blue-700 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          <span class="text-[10px] mt-0.5">Yêu thích</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-600 hover:text-blue-700 transition relative">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+          <span class="text-[10px] mt-0.5">Giỏ hàng</span>
+        </button>
+        <button class="hidden sm:flex flex-col items-center text-gray-600 hover:text-blue-700 transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          <span class="text-[10px] mt-0.5">Tài khoản</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="border-t border-gray-100 hidden md:block">
+      <div class="max-w-7xl mx-auto px-4">
+        <ul class="flex items-center gap-6 lg:gap-8 text-sm font-medium">
+          <li><a href="#" class="flex items-center gap-1.5 py-3 text-red-600 border-b-2 border-red-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            Trang chủ
+          </a></li>
+          <li><a href="#" class="flex items-center gap-1.5 py-3 text-gray-700 hover:text-blue-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Tất cả sản phẩm
+          </a></li>
+          <li class="relative group">
+            <a href="#" class="flex items-center gap-1.5 py-3 text-gray-700 hover:text-blue-700 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              Thương hiệu
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </a>
+            <div class="absolute top-full left-0 w-56 bg-white shadow-xl rounded-lg py-2 hidden group-hover:block border border-gray-100 z-50">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">🎮 Gamesir</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">🕹️ Flydigi</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">🎯 Aolion</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">⚡ 8BitDo</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">🔥 Xbox</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700">🎲 PlayStation</a>
+            </div>
+          </li>
+          <li><a href="#" class="flex items-center gap-1.5 py-3 text-gray-700 hover:text-blue-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Combo tiết kiệm
+          </a></li>
+          <li><a href="#" class="flex items-center gap-1.5 py-3 text-gray-700 hover:text-blue-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+            Blog & Review
+          </a></li>
+          <li><a href="#" class="flex items-center gap-1.5 py-3 text-gray-700 hover:text-blue-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Hỗ trợ
+          </a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- Main Banner -->
+      <div class="lg:col-span-8 rounded-2xl overflow-hidden relative h-[280px] lg:h-[340px] bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700">
+        <div class="absolute inset-0 flex items-center px-6 lg:px-12">
+          <div class="text-white max-w-lg">
+            <span class="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 lg:mb-4">🔥 SIÊU SALE 8.8</span>
+            <h2 class="text-2xl lg:text-4xl font-black mb-2 lg:mb-3 leading-tight">TAY CẦM GAMING<br><span class="text-yellow-400">CHÍNH HÃNG</span> GIÁ TỐT</h2>
+            <p class="text-blue-100 mb-4 lg:mb-6 text-xs lg:text-sm">Freeship toàn quốc • Bảo hành 12 tháng • Đổi trả 7 ngày</p>
+            <div class="flex gap-3">
+              <button class="bg-red-500 hover:bg-red-600 text-white font-bold px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl transition shadow-lg shadow-red-500/30 text-sm">
+                Mua ngay →
+              </button>
+              <button class="bg-white/20 hover:bg-white/30 text-white font-semibold px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl backdrop-blur transition text-sm">
+                Xem tất cả
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 opacity-10 lg:opacity-20">
+          <svg class="w-40 lg:w-64 h-40 lg:h-64 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        </div>
+      </div>
+
+      <!-- Side Banners -->
+      <div class="lg:col-span-4 flex lg:flex-col gap-4">
+        <div class="flex-1 rounded-2xl overflow-hidden relative bg-gradient-to-br from-red-500 to-red-600 p-4 lg:p-6 flex flex-col justify-between min-h-[130px]">
+          <div>
+            <span class="text-red-100 text-xs font-bold">ƯU ĐÃI ĐẶC BIỆT</span>
+            <h3 class="text-white text-lg lg:text-xl font-bold mt-1">GIẢM ĐẾN<br><span class="text-2xl lg:text-3xl">40%</span></h3>
+          </div>
+          <button class="bg-white text-red-600 font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-lg w-fit hover:bg-gray-100 transition">Khám phá →</button>
+        </div>
+        <div class="flex-1 rounded-2xl overflow-hidden relative bg-gradient-to-br from-gray-800 to-gray-900 p-4 lg:p-6 flex flex-col justify-between min-h-[130px]">
+          <div>
+            <span class="text-gray-400 text-xs font-bold">MỚI NHẤT</span>
+            <h3 class="text-white text-lg lg:text-xl font-bold mt-1">FLYDIGI<br>VADER 5 PRO</h3>
+          </div>
+          <button class="bg-blue-600 text-white font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-lg w-fit hover:bg-blue-700 transition">Xem ngay →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Marquee -->
+  <section class="bg-white border-y border-gray-100 py-4">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between gap-4 lg:gap-8 overflow-x-auto scrollbar-hide">
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🎮</span>
+          <span class="font-bold text-gray-800 text-sm">GAMESIR</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🕹️</span>
+          <span class="font-bold text-gray-800 text-sm">FLYDIGI</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🎯</span>
+          <span class="font-bold text-gray-800 text-sm">AOLION</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">⚡</span>
+          <span class="font-bold text-gray-800 text-sm">8BITDO</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🔥</span>
+          <span class="font-bold text-gray-800 text-sm">XBOX</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🎲</span>
+          <span class="font-bold text-gray-800 text-sm">PLAYSTATION</span>
+        </a>
+        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-lg min-w-fit hover:bg-blue-50 transition">
+          <span class="text-xl">🌟</span>
+          <span class="font-bold text-gray-800 text-sm">RAZER</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flash Sale -->
+  <section class="max-w-7xl mx-auto px-4 py-6 lg:py-8">
+    <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-4 lg:p-6 border border-red-100">
+      <div class="flex items-center justify-between mb-4 lg:mb-6 flex-wrap gap-2">
+        <div class="flex items-center gap-2 lg:gap-3">
+          <span class="text-xl lg:text-2xl">⚡</span>
+          <h2 class="text-xl lg:text-2xl font-black text-red-600">FLASH SALE</h2>
+          <div class="flex items-center gap-1 ml-2 lg:ml-4">
+            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">02</span>
+            <span class="text-red-600 font-bold">:</span>
+            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">45</span>
+            <span class="text-red-600 font-bold">:</span>
+            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">18</span>
+          </div>
+        </div>
+        <a href="#" class="text-red-600 text-sm font-semibold hover:underline">Xem tất cả →</a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
+        <!-- Product Card 1 -->
+        <div class="bg-white rounded-xl p-3 shadow-sm hover:shadow-lg transition cursor-pointer group border border-gray-100">
+          <div class="relative mb-3">
+            <div class="bg-gray-100 rounded-lg h-32 lg:h-40 flex items-center justify-center">
+              <span class="text-4xl lg:text-5xl">🎮</span>
+            </div>
+            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">-32%</span>
+            <span class="absolute top-2 right-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">BH 12T</span>
+          </div>
+          <h3 class="text-xs lg:text-sm font-semibold text-gray-800 line-clamp-2 mb-1 group-hover:text-blue-700 transition">Gamesir T3 LITE Hall Joystick 2 phím macro</h3>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="text-yellow-400 text-xs">★★★★★</span>
+            <span class="text-gray-400 text-[10px] lg:text-xs">4.9</span>
+            <span class="text-gray-300 text-[10px] lg:text-xs">| 2k+ sold</span>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-red-600 font-bold text-sm lg:text-lg">339.000₫</span>
+            <span class="text-gray-400 text-[10px] line-through">499.000₫</span>
+          </div>
+        </div>
+
+        <!-- Product Card 2 -->
+        <div class="bg-white rounded-xl p-3 shadow-sm hover:shadow-lg transition cursor-pointer group border border-gray-100">
+          <div class="relative mb-3">
+            <div class="bg-gray-100 rounded-lg h-32 lg:h-40 flex items-center justify-center">
+              <span class="text-4xl lg:text-5xl">🕹️</span>
+            </div>
+            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">-38%</span>
+            <span class="absolute top-2 right-2 bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">TOP 1</span>
+          </div>
+          <h3 class="text-xs lg:text-sm font-semibold text-gray-800 line-clamp-2 mb-1 group-hover:text-blue-700 transition">Flydigi DUNE FOX Hall Effect chính xác</h3>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="text-yellow-400 text-xs">★★★★★</span>
+            <span class="text-gray-400 text-[10px] lg:text-xs">5.0</span>
+            <span class="text-gray-300 text-[10px] lg:text-xs">| 7k+ sold</span>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-red-600 font-bold text-sm lg:text-lg">449.368₫</span>
+            <span class="text-gray-400 text-[10px] line-through">720.000₫</span>
+          </div>
+        </div>
+
+        <!-- Product Card 3 -->
+        <div class="bg-white rounded-xl p-3 shadow-sm hover:shadow-lg transition cursor-pointer group border border-gray-100">
+          <div class="relative mb-3">
+            <div class="bg-gray-100 rounded-lg h-32 lg:h-40 flex items-center justify-center">
+              <span class="text-4xl lg:text-5xl">🎯</span>
+            </div>
+            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">-37%</span>
+          </div>
+          <h3 class="text-xs lg:text-sm font-semibold text-gray-800 line-clamp-2 mb-1 group-hover:text-blue-700 transition">Gamesir NOVA 2 LITE Đầy đủ công nghệ</h3>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="text-yellow-400 text-xs">★★★★★</span>
+            <span class="text-gray-400 text-[10px] lg:text-xs">5.0</span>
+            <span class="text-gray-300 text-[10px] lg:text-xs">| 2k+ sold</span>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-red-600 font-bold text-sm lg:text-lg">599.000₫</span>
+            <span class="text-gray-400 text-[10px] line-through">950.000₫</span>
+          </div>
+        </div>
+
+        <!-- Product Card 4 -->
+        <div class="bg-white rounded-xl p-3 shadow-sm hover:shadow-lg transition cursor-pointer group border border-gray-100">
+          <div class="relative mb-3">
+            <div class="bg-gray-100 rounded-lg h-32 lg:h-40 flex items-center justify-center">
+              <span class="text-4xl lg:text-5xl">🕹️</span>
+            </div>
+            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">-35%</span>
+            <span class="absolute top-2 right-2 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">E-SPORTS</span>
+          </div>
+          <h3 class="text-xs lg:text-sm font-semibold text-gray-800 line-clamp-2 mb-1 group-hover:text-blue-700 transition">Flydigi VADER 5 PRO Đạt chuẩn thi đấu</h3>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="text-yellow-400 text-xs">★★★★★</span>
+            <span class="text-gray-400 text-[10px] lg:text-xs">5.0</span>
+            <span class="text-gray-300 text-[10px] lg:text-xs">| 499 sold</span>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-red-600 font-bold text-sm lg:text-lg">1.699.000₫</span>
+            <span class="text-gray-400 text-[10px] line-through">2.600.000₫</span>
+          </div>
+        </div>
+
+        <!-- Product Card 5 -->
+        <div class="bg-white rounded-xl p-3 shadow-sm hover:shadow-lg transition cursor-pointer group border border-gray-100 hidden md:block">
+          <div class="relative mb-3">
+            <div class="bg-gray-100 rounded-lg h-32 lg:h-40 flex items-center justify-center">
+              <span class="text-4xl lg:text-5xl">🎮</span>
+            </div>
+            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">-38%</span>
+          </div>
+          <h3 class="text-xs lg:text-sm font-semibold text-gray-800 line-clamp-2 mb-1 group-hover:text-blue-700 transition">Gamesir X5 LITE Kết nối Type-C</h3>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="text-yellow-400 text-xs">★★★★☆</span>
+            <span class="text-gray-400 text-[10px] lg:text-xs">4.9</span>
+            <span class="text-gray-300 text-[10px] lg:text-xs">| 374 sold</span>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-red-600 font-bold text-sm lg:text-lg">499.000₫</span>
+            <span class="text-gray-400 text-[10px] line-through">799.000₫</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+    <h2 class="text-lg lg:text-xl font-bold text-gray-800 mb-4">🔥 DANH MỤC NỔI BẬT</h2>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-3 lg:gap-4">
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-blue-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-blue-100 transition">
+          <span class="text-2xl lg:text-3xl">🎮</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Tay cầm PC</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">120+ sản phẩm</p>
+      </a>
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-red-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-red-100 transition">
+          <span class="text-2xl lg:text-3xl">🕹️</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Tay cầm Console</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">85+ sản phẩm</p>
+      </a>
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-purple-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-purple-100 transition">
+          <span class="text-2xl lg:text-3xl">🎧</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Tai nghe Gaming</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">45+ sản phẩm</p>
+      </a>
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-green-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-green-100 transition">
+          <span class="text-2xl lg:text-3xl">📱</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Tay cầm Mobile</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">60+ sản phẩm</p>
+      </a>
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-orange-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-orange-100 transition">
+          <span class="text-2xl lg:text-3xl">🎒</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Phụ kiện</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">200+ sản phẩm</p>
+      </a>
+      <a href="#" class="bg-white rounded-xl p-3 lg:p-4 text-center shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="w-12 h-12 lg:w-16 lg:h-16 mx-auto bg-yellow-50 rounded-full flex items-center justify-center mb-2 lg:mb-3 group-hover:bg-yellow-100 transition">
+          <span class="text-2xl lg:text-3xl">⚡</span>
+        </div>
+        <h3 class="font-semibold text-xs lg:text-sm text-gray-800">Combo tiết kiệm</h3>
+        <p class="text-[10px] lg:text-xs text-gray-400 mt-1">15+ combo</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- New Arrivals -->
+  <section class="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg lg:text-xl font-bold text-gray-800">✨ HÀNG MỚI VỀ</h2>
+      <a href="#" class="text-blue-600 text-sm font-semibold hover:underline">Xem tất cả →</a>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+      <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 group">
+        <div class="h-36 lg:h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+          <span class="text-4xl lg:text-6xl">🎮</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded">MỚI</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition">Gamesir T3 LITE Menard</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-1">Hall Joystick | Macro | RGB</p>
+          <div class="flex items-center justify-between mt-2 lg:mt-3">
+            <span class="text-red-600 font-bold text-sm lg:text-base">399.000₫</span>
+            <button class="bg-blue-600 text-white p-1.5 lg:p-2 rounded-lg hover:bg-blue-700 transition">
+              <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 group">
+        <div class="h-36 lg:h-48 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+          <span class="text-4xl lg:text-6xl">🕹️</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded">PRO</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition">Gamesir TARANTULA PRO</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-1">Hall Effect | Wireless | RGB</p>
+          <div class="flex items-center justify-between mt-2 lg:mt-3">
+            <span class="text-red-600 font-bold text-sm lg:text-base">899.000₫</span>
+            <button class="bg-blue-600 text-white p-1.5 lg:p-2 rounded-lg hover:bg-blue-700 transition">
+              <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 group">
+        <div class="h-36 lg:h-48 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+          <span class="text-4xl lg:text-6xl">🎮</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded">SIÊU NHẸ</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition">Gamesir TARANTULA CE 8K</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-1">180g | Độ trễ thấp | Cắm dây</p>
+          <div class="flex items-center justify-between mt-2 lg:mt-3">
+            <span class="text-red-600 font-bold text-sm lg:text-base">459.000₫</span>
+            <button class="bg-blue-600 text-white p-1.5 lg:p-2 rounded-lg hover:bg-blue-700 transition">
+              <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer border border-gray-100 group">
+        <div class="h-36 lg:h-48 bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center">
+          <span class="text-4xl lg:text-6xl">🎯</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded">JOY-CON</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition">Aolion J20 Joy-Con</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-1">Phím bấm cơ | Hall Joystick</p>
+          <div class="flex items-center justify-between mt-2 lg:mt-3">
+            <span class="text-red-600 font-bold text-sm lg:text-base">899.000₫</span>
+            <button class="bg-blue-600 text-white p-1.5 lg:p-2 rounded-lg hover:bg-blue-700 transition">
+              <svg class="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Banner -->
+  <section class="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+      <div class="bg-white rounded-xl p-4 lg:p-5 flex items-center gap-3 lg:gap-4 shadow-sm border border-gray-100">
+        <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-50 rounded-full flex items-center justify-center text-xl lg:text-2xl shrink-0">🚚</div>
+        <div>
+          <h4 class="font-bold text-xs lg:text-sm text-gray-800">FREESHIP TOÀN QUỐC</h4>
+          <p class="text-[10px] lg:text-xs text-gray-500">Đơn từ 0đ, giao nhanh 1-3 ngày</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 lg:p-5 flex items-center gap-3 lg:gap-4 shadow-sm border border-gray-100">
+        <div class="w-10 h-10 lg:w-12 lg:h-12 bg-green-50 rounded-full flex items-center justify-center text-xl lg:text-2xl shrink-0">🛡️</div>
+        <div>
+          <h4 class="font-bold text-xs lg:text-sm text-gray-800">BẢO HÀNH 12 THÁNG</h4>
+          <p class="text-[10px] lg:text-xs text-gray-500">1 đổi 1 trong 7 ngày đầu</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 lg:p-5 flex items-center gap-3 lg:gap-4 shadow-sm border border-gray-100">
+        <div class="w-10 h-10 lg:w-12 lg:h-12 bg-purple-50 rounded-full flex items-center justify-center text-xl lg:text-2xl shrink-0">✅</div>
+        <div>
+          <h4 class="font-bold text-xs lg:text-sm text-gray-800">HÀNG CHÍNH HÃNG</h4>
+          <p class="text-[10px] lg:text-xs text-gray-500">Cam kết 100% authentic</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-4 lg:p-5 flex items-center gap-3 lg:gap-4 shadow-sm border border-gray-100">
+        <div class="w-10 h-10 lg:w-12 lg:h-12 bg-orange-50 rounded-full flex items-center justify-center text-xl lg:text-2xl shrink-0">💬</div>
+        <div>
+          <h4 class="font-bold text-xs lg:text-sm text-gray-800">HỖ TRỢ 24/7</h4>
+          <p class="text-[10px] lg:text-xs text-gray-500">Tư vấn chọn mua phù hợp</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section class="max-w-7xl mx-auto px-4 py-4 lg:py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg lg:text-xl font-bold text-gray-800">📝 BLOG & REVIEW</h2>
+      <a href="#" class="text-blue-600 text-sm font-semibold hover:underline">Xem tất cả →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 lg:gap-4">
+      <a href="#" class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="h-36 lg:h-40 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+          <span class="text-3xl lg:text-4xl">📊</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded">REVIEW</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition line-clamp-2">So sánh Gamesir T3 LITE vs Flydigi DUNE FOX: Nên chọn tay cầm nào?</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-2">15 phút đọc • 2.5k lượt xem</p>
+        </div>
+      </a>
+      <a href="#" class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="h-36 lg:h-40 bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center">
+          <span class="text-3xl lg:text-4xl">⚙️</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded">HƯỚNG DẪN</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition line-clamp-2">Hướng dẫn cài đặt và tùy chỉnh phím macro trên tay cầm Gamesir</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-2">8 phút đọc • 1.8k lượt xem</p>
+        </div>
+      </a>
+      <a href="#" class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition border border-gray-100 group">
+        <div class="h-36 lg:h-40 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+          <span class="text-3xl lg:text-4xl">📰</span>
+        </div>
+        <div class="p-3 lg:p-4">
+          <span class="text-[10px] bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded">TIN TỨC</span>
+          <h3 class="font-semibold text-xs lg:text-sm text-gray-800 mt-2 group-hover:text-blue-700 transition line-clamp-2">Flydigi ra mắt VADER 5 PRO: Tay cầm e-sports đỉnh cao mới</h3>
+          <p class="text-[10px] lg:text-xs text-gray-400 mt-2">5 phút đọc • 3.2k lượt xem</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="max-w-7xl mx-auto px-4 py-6 lg:py-8">
+    <div class="bg-gradient-to-r from-blue-700 to-blue-900 rounded-2xl p-6 lg:p-8 text-center text-white">
+      <h2 class="text-xl lg:text-2xl font-black mb-2">🎮 ĐĂNG KÝ NHẬN ƯU ĐÃI</h2>
+      <p class="text-blue-200 mb-4 lg:mb-6 text-sm">Nhận ngay voucher 50.000₫ và thông tin khuyến mãi sớm nhất!</p>
+      <form class="flex flex-col sm:flex-row max-w-md mx-auto gap-2" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+        <input type="email" placeholder="Nhập email của bạn..." required
+          class="flex-1 px-4 py-3 rounded-xl text-gray-800 text-sm focus:outline-none">
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold px-6 py-3 rounded-xl transition">Đăng ký</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-10 lg:pt-12 pb-20 lg:pb-6">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8">
+        <!-- Brand -->
+        <div class="col-span-2 lg:col-span-1">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+              <span class="text-xl">🎮</span>
+            </div>
+            <div>
+              <h3 class="font-black text-lg"><span class="text-blue-400">TAYCAM</span><span class="text-red-500">HANOI</span></h3>
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed">Chuyên cung cấp tay cầm & phụ kiện gaming chính hãng với giá tốt nhất. Freeship toàn quốc, bảo hành 12 tháng.</p>
+          <div class="flex gap-3 mt-4">
+            <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-blue-600 transition">📘</a>
+            <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-pink-600 transition">📸</a>
+            <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-red-600 transition">▶️</a>
+            <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-green-600 transition">💬</a>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-gray-300">DANH MỤC</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition">Tay cầm PC</a></li>
+            <li><a href="#" class="hover:text-white transition">Tay cầm Console</a></li>
+            <li><a href="#" class="hover:text-white transition">Tay cầm Mobile</a></li>
+            <li><a href="#" class="hover:text-white transition">Tai nghe Gaming</a></li>
+            <li><a href="#" class="hover:text-white transition">Phụ kiện</a></li>
+            <li><a href="#" class="hover:text-white transition">Combo tiết kiệm</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-gray-300">HỖ TRỢ</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition">Hướng dẫn mua hàng</a></li>
+            <li><a href="#" class="hover:text-white transition">Chính sách bảo hành</a></li>
+            <li><a href="#" class="hover:text-white transition">Chính sách đổi trả</a></li>
+            <li><a href="#" class="hover:text-white transition">Phương thức thanh toán</a></li>
+            <li><a href="#" class="hover:text-white transition">Theo dõi đơn hàng</a></li>
+            <li><a href="#" class="hover:text-white transition">Liên hệ</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="font-bold text-sm mb-4 text-gray-300">LIÊN HỆ</h4>
+          <ul class="space-y-3 text-sm text-gray-400">
+            <li class="flex items-start gap-2">
+              <span>📍</span>
+              <span>Hà Nội, Việt Nam</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>📞</span>
+              <span>090.xxx.xxxx</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>✉️</span>
+              <span>support@taycamhanoi.com</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span>🕐</span>
+              <span>8:00 - 22:00 (T2-CN)</span>
+            </li>
+          </ul>
+          <div class="mt-4 flex gap-2">
+            <span class="bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded">VISA</span>
+            <span class="bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded">MC</span>
+            <span class="bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded">VNPay</span>
+            <span class="bg-white text-gray-800 text-[10px] font-bold px-2 py-1 rounded">COD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+        <p>© 2024 TAYCAMHANOI. All rights reserved.</p>
+        <p>Thiết kế & Phát triển bởi TAYCAMHANOI Team</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky Bottom Bar (Mobile) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex justify-around z-50 shadow-lg">
+    <a href="#" class="flex flex-col items-center text-blue-700">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="text-[10px]">Trang chủ</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      <span class="text-[10px]">Danh mục</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500 relative">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      <span class="absolute -top-1 right-0 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+      <span class="text-[10px]">Giỏ hàng</span>
+    </a>
+    <a href="#" class="flex flex-col items-center text-gray-500">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <span class="text-[10px]">Tài khoản</span>
+    </a>
+  </div>
+
+</body>
+</html>

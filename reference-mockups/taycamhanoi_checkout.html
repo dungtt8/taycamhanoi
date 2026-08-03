@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán - TAYCAMHANOI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb; }
+    .payment-selected { border-color: #2563eb; background: #eff6ff; }
+    .shipping-selected { border-color: #2563eb; background: #eff6ff; }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans antialiased min-h-screen">
+
+  <!-- Top Bar -->
+  <div class="bg-blue-900 text-white text-xs py-2 text-center tracking-wide">
+    🎮 FREESHIP TOÀN QUỐC | BẢO HÀNH CHÍNH HÃNG 12 THÁNG
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 shrink-0">
+        <div class="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center text-white font-black text-sm">TC</div>
+        <div>
+          <h1 class="text-lg font-black tracking-tight"><span class="text-blue-700">TAYCAM</span><span class="text-red-600">HANOI</span></h1>
+        </div>
+      </a>
+      <div class="flex items-center gap-1 text-sm text-gray-500">
+        <span class="text-green-500 font-semibold">✓</span>
+        <span>Giỏ hàng</span>
+        <span class="mx-2">→</span>
+        <span class="text-blue-700 font-semibold border-b-2 border-blue-700 pb-0.5">Thanh toán</span>
+        <span class="mx-2">→</span>
+        <span>Hoàn tất</span>
+      </div>
+      <div class="w-20"></div>
+    </div>
+  </header>
+
+  <!-- Checkout Content -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT: Form -->
+      <div class="lg:col-span-7 space-y-4">
+
+        <!-- Section 1: Shipping Info (Guest Checkout) -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">1</div>
+            <h2 class="text-lg font-bold text-gray-800">Thông tin giao hàng</h2>
+            <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium">Khách vãng lai</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Họ và tên <span class="text-red-500">*</span></label>
+              <input type="text" placeholder="Nguyễn Văn A" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+              <input type="tel" placeholder="0912 345 678" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
+              <input type="email" placeholder="email@example.com" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Địa chỉ giao hàng <span class="text-red-500">*</span></label>
+              <input type="text" placeholder="Số nhà, đường, phường/xã..." class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Tỉnh/Thành phố <span class="text-red-500">*</span></label>
+              <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition bg-white">
+                <option>Chọn tỉnh/thành</option>
+                <option>Hà Nội</option>
+                <option>TP. Hồ Chí Minh</option>
+                <option>Đà Nẵng</option>
+                <option>Hải Phòng</option>
+                <option>Cần Thơ</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Quận/Huyện <span class="text-red-500">*</span></label>
+              <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition bg-white">
+                <option>Chọn quận/huyện</option>
+              </select>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Ghi chú giao hàng</label>
+              <textarea placeholder="Giao giờ hành chính, gọi trước khi giao..." rows="2" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm transition resize-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Shipping Method -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">2</div>
+            <h2 class="text-lg font-bold text-gray-800">Phương thức vận chuyển</h2>
+          </div>
+          <div class="space-y-3">
+            <label class="shipping-option flex items-start gap-3 p-4 border-2 border-blue-500 bg-blue-50 rounded-xl cursor-pointer transition">
+              <input type="radio" name="shipping" value="standard" checked class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold text-sm text-gray-800">🚚 Giao hàng tiêu chuẩn</span>
+                  <span class="text-green-600 font-bold text-sm">MIỄN PHÍ</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Nhận hàng trong 2-4 ngày làm việc</p>
+              </div>
+            </label>
+            <label class="shipping-option flex items-start gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition">
+              <input type="radio" name="shipping" value="fast" class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold text-sm text-gray-800">⚡ Giao hàng nhanh</span>
+                  <span class="text-gray-800 font-bold text-sm">+25.000₫</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Nhận hàng trong 1-2 ngày làm việc</p>
+              </div>
+            </label>
+            <label class="shipping-option flex items-start gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition">
+              <input type="radio" name="shipping" value="express" class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold text-sm text-gray-800">🔥 Hỏa tốc (nội thành HN)</span>
+                  <span class="text-gray-800 font-bold text-sm">+45.000₫</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Nhận hàng trong 2-4 giờ (liên hệ trước)</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Section 3: Payment Method -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">3</div>
+            <h2 class="text-lg font-bold text-gray-800">Phương thức thanh toán</h2>
+          </div>
+          <div class="space-y-3">
+            <!-- COD -->
+            <label class="payment-option flex items-start gap-3 p-4 border-2 border-blue-500 bg-blue-50 rounded-xl cursor-pointer transition">
+              <input type="radio" name="payment" value="cod" checked class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xl">💵</span>
+                  <span class="font-semibold text-sm text-gray-800">Thanh toán khi nhận hàng (COD)</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 ml-7">Nhận hàng, kiểm tra rồi thanh toán. Phí thu hộ: +0₫</p>
+              </div>
+            </label>
+            <!-- VietQR -->
+            <label class="payment-option flex items-start gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition">
+              <input type="radio" name="payment" value="vietqr" class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xl">📱</span>
+                  <span class="font-semibold text-sm text-gray-800">Chuyển khoản VietQR tự động</span>
+                  <span class="bg-green-100 text-green-700 text-[10px] font-bold px-1.5 py-0.5 rounded">TỰ ĐỘNG</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 ml-7">Quét mã QR, hệ thống tự kiểm tra và xác nhận thanh toán tức thì</p>
+                <div class="mt-2 ml-7 p-2 bg-white rounded-lg border border-gray-200 hidden" id="vietqr-box">
+                  <div class="flex items-center gap-3">
+                    <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">QR Code</div>
+                    <div class="text-xs text-gray-600">
+                      <p><strong>Ngân hàng:</strong> MB Bank</p>
+                      <p><strong>Số TK:</strong> 0123 4567 890</p>
+                      <p><strong>Số tiền:</strong> <span class="text-red-600 font-bold">378.000₫</span></p>
+                      <p><strong>Nội dung:</strong> TCH-ORDER123</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </label>
+            <!-- VNPay -->
+            <label class="payment-option flex items-start gap-3 p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-gray-300 transition">
+              <input type="radio" name="payment" value="vnpay" class="mt-0.5 accent-blue-600">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xl">💳</span>
+                  <span class="font-semibold text-sm text-gray-800">VNPay - Thẻ ATM / Ví điện tử / QR Banking</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 ml-7">Hỗ trợ 40+ ngân hàng nội địa và ví điện tử</p>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Order Summary -->
+      <div class="lg:col-span-5">
+        <div class="sticky top-20">
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">📦 Đơn hàng của bạn</h2>
+
+            <!-- Product List -->
+            <div class="space-y-3 mb-4">
+              <!-- Item 1 -->
+              <div class="flex gap-3 p-3 bg-gray-50 rounded-xl">
+                <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-2xl shrink-0 border border-gray-100">🎮</div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-sm font-semibold text-gray-800 truncate">Gamesir T3 LITE Hall Joystick</h4>
+                  <p class="text-xs text-gray-500">Màu: Đen | SL: 1</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-red-600 font-bold text-sm">339.000₫</span>
+                    <button class="text-gray-400 hover:text-red-500 text-xs">✕</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Item 2 (Combo) -->
+              <div class="flex gap-3 p-3 bg-yellow-50 rounded-xl border border-yellow-100">
+                <div class="w-16 h-16 bg-white rounded-lg flex items-center justify-center text-2xl shrink-0 border border-yellow-200">🎒</div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-sm font-semibold text-gray-800 truncate">Bao đựng tay cầm (Combo)</h4>
+                  <p class="text-xs text-gray-500">SL: 1</p>
+                  <div class="flex items-center justify-between mt-1">
+                    <span class="text-red-600 font-bold text-sm">59.000₫</span>
+                    <span class="text-gray-400 text-xs line-through">99.000₫</span>
+                    <button class="text-gray-400 hover:text-red-500 text-xs ml-2">✕</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Voucher -->
+            <div class="border-t border-gray-100 pt-3 mb-3">
+              <div class="flex gap-2">
+                <input type="text" placeholder="Nhập mã giảm giá..." class="flex-1 px-3 py-2 border border-gray-200 rounded-xl text-sm">
+                <button class="bg-gray-800 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-900 transition">Áp dụng</button>
+              </div>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="border-t border-gray-100 pt-3 space-y-2 text-sm">
+              <div class="flex justify-between text-gray-600">
+                <span>Tạm tính (2 sản phẩm)</span>
+                <span>398.000₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Phí vận chuyển</span>
+                <span class="text-green-600 font-medium">Miễn phí</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Giảm giá combo</span>
+                <span class="text-green-600 font-medium">-40.000₫</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Voucher</span>
+                <span class="text-gray-400">Chưa áp dụng</span>
+              </div>
+            </div>
+
+            <!-- Total -->
+            <div class="border-t border-gray-100 pt-3 mt-3">
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-sm text-gray-600">Tổng thanh toán</p>
+                  <p class="text-xs text-gray-400">Đã bao gồm VAT</p>
+                </div>
+                <span class="text-2xl font-black text-red-600">378.000₫</span>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <button onclick="placeOrder()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-500/30 mt-4 flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              ĐẶT HÀNG NGAY
+            </button>
+            <p class="text-center text-xs text-gray-400 mt-2">Bằng việc đặt hàng, bạn đồng ý với <a href="#" class="text-blue-600 hover:underline">Điều khoản</a> của chúng tôi</p>
+
+            <!-- Trust -->
+            <div class="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-gray-100">
+              <div class="flex items-center gap-1 text-xs text-gray-500"><span>🔒</span><span>SSL Bảo mật</span></div>
+              <div class="flex items-center gap-1 text-xs text-gray-500"><span>🛡️</span><span>COD An toàn</span></div>
+              <div class="flex items-center gap-1 text-xs text-gray-500"><span>✅</span><span>Chính hãng</span></div>
+            </div>
+          </div>
+
+          <!-- Need Help -->
+          <div class="bg-blue-50 rounded-2xl p-4 mt-4 border border-blue-100">
+            <h3 class="font-semibold text-sm text-blue-800 mb-2">💬 Cần hỗ trợ?</h3>
+            <p class="text-xs text-blue-600 mb-3">Liên hệ ngay để được tư vấn chọn sản phẩm phù hợp</p>
+            <div class="flex gap-2">
+              <a href="#" class="flex-1 bg-blue-600 text-white text-center text-xs font-semibold py-2 rounded-lg hover:bg-blue-700 transition">📞 Gọi ngay</a>
+              <a href="#" class="flex-1 bg-white text-blue-600 text-center text-xs font-semibold py-2 rounded-lg border border-blue-200 hover:bg-blue-50 transition">💬 Chat Zalo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Minimal -->
+  <footer class="bg-gray-900 text-white py-6 mt-8">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h3 class="font-black text-lg mb-2"><span class="text-blue-400">TAYCAM</span><span class="text-red-500">HANOI</span></h3>
+      <p class="text-gray-400 text-xs">© 2024 TAYCAMHANOI. Chuyên tay cầm & phụ kiện gaming chính hãng.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Payment selection
+    document.querySelectorAll('input[name="payment"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.querySelectorAll('.payment-option').forEach(opt => {
+          opt.classList.remove('border-blue-500', 'bg-blue-50');
+          opt.classList.add('border-gray-200');
+        });
+        this.closest('.payment-option').classList.remove('border-gray-200');
+        this.closest('.payment-option').classList.add('border-blue-500', 'bg-blue-50');
+
+        // Show/hide VietQR box
+        document.getElementById('vietqr-box').classList.toggle('hidden', this.value !== 'vietqr');
+      });
+    });
+
+    // Shipping selection
+    document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        document.querySelectorAll('.shipping-option').forEach(opt => {
+          opt.classList.remove('border-blue-500', 'bg-blue-50');
+          opt.classList.add('border-gray-200');
+        });
+        this.closest('.shipping-option').classList.remove('border-gray-200');
+        this.closest('.shipping-option').classList.add('border-blue-500', 'bg-blue-50');
+      });
+    });
+
+    function placeOrder() {
+      alert('🎉 Đặt hàng thành công!\n\nMã đơn: TCH-20240803-001\nTổng: 378.000₫\n\nCảm ơn bạn đã mua hàng tại TAYCAMHANOI!');
+    }
+  </script>
+</body>
+</html>
