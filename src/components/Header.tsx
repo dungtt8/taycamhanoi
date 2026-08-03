@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { HeartIcon, UserIcon } from "./icons";
 import Nav from "./Nav";
 import CartButton from "./CartButton";
@@ -17,19 +18,20 @@ interface HeaderProps {
 function Logo({ compact }: { compact: boolean }) {
   return (
     <Link href="/" className="flex items-center gap-2 shrink-0">
-      <div className="w-12 h-12 flex items-center justify-center bg-blue-700 rounded-lg text-white font-black text-lg">
-        TC
-      </div>
+      <Image
+        src="/logo.png"
+        alt="TAYCAMHANOI"
+        width={320}
+        height={320}
+        className="h-14 w-14 object-contain"
+        priority
+      />
       {!compact && (
-        <div>
-          <h1 className="text-xl font-black tracking-tight">
-            <span className="text-blue-700">TAYCAM</span>
-            <span className="text-red-600">HANOI</span>
-          </h1>
-          <p className="text-[10px] text-gray-500 -mt-1 tracking-widest">
-            CHUYÊN TAY CẦM &amp; PHỤ KIỆN GAMING
-          </p>
-        </div>
+        <p className="text-[10px] text-gray-500 tracking-widest hidden sm:block">
+          CHUYÊN TAY CẦM
+          <br />
+          &amp; PHỤ KIỆN GAMING
+        </p>
       )}
     </Link>
   );
