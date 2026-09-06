@@ -1,14 +1,17 @@
 import Link from "next/link";
+import { getWooBrands } from "@/lib/woocommerce";
 
 export type FooterVariant = "full" | "condensed" | "minimal";
 
-export default function Footer({
+export default async function Footer({
   variant = "condensed",
   highlightBrand,
 }: {
   variant?: FooterVariant;
   highlightBrand?: string;
 }) {
+  const brands = variant === "minimal" ? [] : (await getWooBrands()).slice(0, 4);
+
   if (variant === "minimal") {
     return (
       <footer className="bg-white border-t border-gray-100 py-6 text-center text-sm text-gray-500">
@@ -44,18 +47,22 @@ export default function Footer({
           <h4 className="text-white font-bold mb-3">Danh mục</h4>
           <ul className="space-y-2">
             <li><Link href="/san-pham" className="hover:text-white">Tất cả sản phẩm</Link></li>
-            <li><Link href="/thuong-hieu/gamesir" className="hover:text-white">Gamesir</Link></li>
-            <li><Link href="/thuong-hieu/flydigi" className="hover:text-white">Flydigi</Link></li>
-            <li><Link href="/thuong-hieu/aolion" className="hover:text-white">Aolion</Link></li>
+            {brands.map((brand) => (
+              <li key={brand.slug}>
+                <Link href={`/thuong-hieu/${brand.slug}`} className="hover:text-white">
+                  {brand.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div>
           <h4 className="text-white font-bold mb-3">Hỗ trợ</h4>
           <ul className="space-y-2">
-            <li><Link href="#" className="hover:text-white">Chính sách bảo hành</Link></li>
-            <li><Link href="#" className="hover:text-white">Chính sách đổi trả</Link></li>
-            <li><Link href="#" className="hover:text-white">Hướng dẫn mua hàng</Link></li>
-            <li><Link href="#" className="hover:text-white">Liên hệ</Link></li>
+            <li><Link href="/chinh-sach/chinh-sach-bao-hanh" className="hover:text-white">Chính sách bảo hành</Link></li>
+            <li><Link href="/chinh-sach/chinh-sach-doi-tra" className="hover:text-white">Chính sách đổi trả</Link></li>
+            <li><Link href="/huong-dan" className="hover:text-white">Hướng dẫn mua hàng</Link></li>
+            <li><Link href="/huong-dan" className="hover:text-white">Liên hệ</Link></li>
           </ul>
         </div>
         <div>

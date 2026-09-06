@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/format";
 import { CloseIcon, TrashIcon, CartIcon } from "./icons";
@@ -40,9 +41,13 @@ export default function CartDrawer() {
               className="flex items-center gap-3 border border-gray-100 rounded-lg p-2"
             >
               <div
-                className={`w-14 h-14 rounded-lg flex items-center justify-center text-2xl bg-gradient-to-br ${item.colorFrom} ${item.colorTo}`}
+                className={`w-14 h-14 rounded-lg overflow-hidden relative flex items-center justify-center text-2xl bg-gradient-to-br ${item.colorFrom} ${item.colorTo}`}
               >
-                {item.emoji}
+                {item.imageUrl ? (
+                  <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="56px" />
+                ) : (
+                  item.emoji
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-800 line-clamp-2">{item.name}</p>

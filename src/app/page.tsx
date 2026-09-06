@@ -6,14 +6,32 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import ProductCard from "@/components/ProductCard";
 import CountdownTimer from "@/components/CountdownTimer";
 import NewsletterForm from "@/components/NewsletterForm";
-import { products } from "@/data/products";
-import { categories } from "@/data/categories";
-import { brands } from "@/data/brands";
-import { blogPosts } from "@/data/blog";
+import { getWooProducts, getWooCategories, getWooBrands } from "@/lib/woocommerce";
+import { getWpPosts, getWpCategoryBySlug } from "@/lib/wordpress";
+import { mapWooProduct } from "@/lib/woo-adapter";
 
-export default function HomePage() {
-  const flashSale = products.filter((p) => p.discountPercent).slice(0, 5);
-  const newArrivals = products.slice(5, 9);
+export const revalidate = 60;
+
+async function getLatestBlogPosts() {
+  const category = await getWpCategoryBySlug("blog-review");
+  return getWpPosts({
+    per_page: "3",
+    orderby: "date",
+    order: "desc",
+    ...(category ? { categories: String(category.id) } : {}),
+  });
+}
+
+export default async function HomePage() {
+  const [flashSaleWoo, newArrivalsWoo, categories, brandTerms, blogPosts] = await Promise.all([
+    getWooProducts({ on_sale: "true", per_page: "5" }),
+    getWooProducts({ orderby: "date", order: "desc", per_page: "4" }),
+    getWooCategories(),
+    getWooBrands(),
+    getLatestBlogPosts(),
+  ]);
+  const flashSale = flashSaleWoo.map(mapWooProduct);
+  const newArrivals = newArrivalsWoo.map(mapWooProduct);
 
   return (
     <>
@@ -89,70 +107,78 @@ export default function HomePage() {
       </section>
 
       {/* Brand marquee */}
-      <section className="max-w-7xl mx-auto px-4 pb-4">
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-1">
-          {brands.map((brand) => (
-            <Link
-              key={brand.slug}
-              href={`/thuong-hieu/${brand.slug}`}
-              className="shrink-0 flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:border-blue-400 hover:text-blue-700 transition"
-            >
-              <span>{brand.emoji}</span> {brand.name}
-            </Link>
-          ))}
-        </div>
-      </section>
+      {brandTerms.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 pb-4">
+          <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide pb-1">
+            {brandTerms.map((brand) => (
+              <Link
+                key={brand.slug}
+                href={`/thuong-hieu/${brand.slug}`}
+                className="shrink-0 flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:border-blue-400 hover:text-blue-700 transition"
+              >
+                <span>🏷️</span> {brand.name}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Flash Sale */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-lg lg:text-xl font-black text-gray-900">⚡ FLASH SALE</h2>
-            <CountdownTimer />
+      {flashSale.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <h2 className="text-lg lg:text-xl font-black text-gray-900">⚡ FLASH SALE</h2>
+              <CountdownTimer />
+            </div>
+            <Link href="/san-pham" className="text-sm font-semibold text-blue-700 hover:underline">
+              Xem tất cả →
+            </Link>
           </div>
-          <Link href="/san-pham" className="text-sm font-semibold text-blue-700 hover:underline">
-            Xem tất cả →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {flashSale.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {flashSale.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <h2 className="text-lg lg:text-xl font-black text-gray-900 mb-4">DANH MỤC NỔI BẬT</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-          {categories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/san-pham?category=${cat.slug}`}
-              className="flex flex-col items-center gap-2 bg-white rounded-xl p-4 shadow-sm hover:shadow-lg transition text-center"
-            >
-              <span className="text-3xl">{cat.emoji}</span>
-              <span className="text-sm font-semibold text-gray-800">{cat.name}</span>
-              <span className="text-xs text-gray-400">{cat.productCount} sản phẩm</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {categories.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 py-6">
+          <h2 className="text-lg lg:text-xl font-black text-gray-900 mb-4">DANH MỤC NỔI BẬT</h2>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/san-pham?category=${cat.slug}`}
+                className="flex flex-col items-center gap-2 bg-white rounded-xl p-4 shadow-sm hover:shadow-lg transition text-center"
+              >
+                <span className="text-3xl">🎮</span>
+                <span className="text-sm font-semibold text-gray-800">{cat.name}</span>
+                <span className="text-xs text-gray-400">{cat.count} sản phẩm</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* New Arrivals */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg lg:text-xl font-black text-gray-900">HÀNG MỚI VỀ</h2>
-          <Link href="/san-pham" className="text-sm font-semibold text-blue-700 hover:underline">
-            Xem tất cả →
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {newArrivals.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      </section>
+      {newArrivals.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg lg:text-xl font-black text-gray-900">HÀNG MỚI VỀ</h2>
+            <Link href="/san-pham" className="text-sm font-semibold text-blue-700 hover:underline">
+              Xem tất cả →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {newArrivals.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Trust features */}
       <section className="max-w-7xl mx-auto px-4 py-6">
@@ -172,30 +198,39 @@ export default function HomePage() {
       </section>
 
       {/* Blog */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
-        <h2 className="text-lg lg:text-xl font-black text-gray-900 mb-4">BLOG &amp; REVIEW</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {blogPosts.map((post) => (
-            <div key={post.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition overflow-hidden">
-              <div className="h-32 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-4xl">
-                📰
-              </div>
-              <div className="p-4">
-                <span className="inline-block text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-full mb-2">
-                  {post.tag}
-                </span>
-                <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2">{post.title}</h3>
-                <p className="text-xs text-gray-500 line-clamp-2 mb-2">{post.excerpt}</p>
-                <div className="flex items-center gap-2 text-[11px] text-gray-400">
-                  <span>{post.readTime}</span>
-                  <span>•</span>
-                  <span>{post.views}</span>
+      {blogPosts.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg lg:text-xl font-black text-gray-900">BLOG &amp; REVIEW</h2>
+            <Link href="/blog" className="text-sm font-semibold text-blue-700 hover:underline">
+              Xem tất cả →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {blogPosts.map((post) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition overflow-hidden"
+              >
+                <div className="h-32 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-4xl">
+                  📰
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+                <div className="p-4">
+                  <h3
+                    className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2"
+                    dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                  />
+                  <div
+                    className="text-xs text-gray-500 line-clamp-2"
+                    dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Newsletter */}
       <section className="max-w-7xl mx-auto px-4 py-6">

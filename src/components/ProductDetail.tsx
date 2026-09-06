@@ -1,37 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import type { Product, Review } from "@/data/types";
-import { formatPrice } from "@/lib/format";
+import Link from "next/link";
+import Image from "next/image";
+import type { Product } from "@/data/types";
+import { formatPrice, RICH_TEXT_CLASS } from "@/lib/format";
 import { useCart } from "@/lib/cart-context";
-import { StarIcon } from "./icons";
 import ProductCard from "./ProductCard";
-
-const TABS = [
-  { key: "description", label: "Mô tả" },
-  { key: "specs", label: "Thông số" },
-  { key: "reviews", label: "Đánh giá" },
-] as const;
-
-type TabKey = (typeof TABS)[number]["key"];
 
 export default function ProductDetail({
   product,
-  reviews,
+  warrantyPolicyHtml,
   related,
 }: {
   product: Product;
-  reviews: Review[];
+  warrantyPolicyHtml?: string;
   related: Product[];
 }) {
   const { addItem, openDrawer } = useCart();
   const [activeImage, setActiveImage] = useState(0);
   const [variant, setVariant] = useState(product.variants?.[0]?.name);
   const [qty, setQty] = useState(1);
-  const [tab, setTab] = useState<TabKey>("description");
   const [comboSelected, setComboSelected] = useState<Record<string, boolean>>({});
 
-  const gallery = product.images && product.images.length > 0 ? product.images : [product.emoji];
+  const gallery = product.images && product.images.length > 0 ? product.images : null;
+  const isOutOfStock = product.stockStatus === "outofstock";
+  const isPreorder = product.stockStatus === "onbackorder";
 
   const comboTotal = (product.comboItems ?? []).reduce(
     (sum, item) => (comboSelected[item.name] ? sum + item.price : sum),
@@ -46,6 +40,7 @@ export default function ProductDetail({
       emoji: product.emoji,
       colorFrom: product.colorFrom,
       colorTo: product.colorTo,
+      imageUrl: product.imageUrl,
       price: product.price,
       variant,
       qty,
@@ -58,45 +53,59 @@ export default function ProductDetail({
         {/* Gallery */}
         <div className="lg:col-span-5">
           <div
-            className={`h-72 lg:h-96 rounded-2xl flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
+            className={`aspect-square rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
           >
-            {gallery[activeImage]}
+            {gallery ? (
+              <Image
+                src={gallery[activeImage]}
+                alt={product.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                priority
+              />
+            ) : (
+              product.emoji
+            )}
           </div>
-          <div className="flex gap-2">
-            {gallery.map((emoji, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveImage(i)}
-                className={`w-14 h-14 rounded-lg flex items-center justify-center text-2xl border-2 transition ${
-                  activeImage === i ? "border-blue-600" : "border-gray-200"
-                } bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
-              >
-                {emoji}
-              </button>
-            ))}
-          </div>
+          {gallery && (
+            <div className="flex gap-2">
+              {gallery.map((src, i) => (
+                <button
+                  key={src}
+                  onClick={() => setActiveImage(i)}
+                  className={`w-14 h-14 rounded-lg overflow-hidden relative border-2 transition ${
+                    activeImage === i ? "border-blue-600" : "border-gray-200"
+                  } bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
+                >
+                  <Image src={src} alt={product.name} fill className="object-cover" sizes="56px" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Info */}
         <div className="lg:col-span-7">
           <div className="flex items-center gap-2 mb-2">
-            {product.badge && (
-              <span className="text-[11px] font-bold bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
-                {product.badge}
-              </span>
+            {product.categoryName && (
+              <Link
+                href={`/san-pham?category=${product.category}`}
+                className="text-[11px] font-bold bg-blue-50 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-100"
+              >
+                {product.categoryName}
+              </Link>
             )}
             <span className="text-[11px] font-bold bg-green-50 text-green-700 px-2 py-1 rounded-full">
               ✅ Chính hãng
             </span>
+            {isPreorder && (
+              <span className="text-[11px] font-bold bg-yellow-50 text-yellow-700 px-2 py-1 rounded-full">
+                Đặt hàng trước
+              </span>
+            )}
           </div>
-          <h1 className="text-xl lg:text-2xl font-black text-gray-900 mb-2">{product.name}</h1>
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-            <StarIcon className="w-4 h-4 text-yellow-400" />
-            <span className="font-semibold text-gray-700">{product.rating.toFixed(1)}</span>
-            <span>({product.ratingCount} đánh giá)</span>
-            <span className="text-gray-300">•</span>
-            <span>Đã bán {product.soldCount}</span>
-          </div>
+          <h1 className="text-xl lg:text-2xl font-black text-gray-900 mb-4">{product.name}</h1>
 
           <div className="bg-gray-50 rounded-xl p-4 mb-5">
             <div className="flex items-baseline gap-3">
@@ -112,11 +121,6 @@ export default function ProductDetail({
                 </span>
               )}
             </div>
-            {product.originalPrice > product.price && (
-              <p className="text-xs text-green-600 mt-1">
-                Tiết kiệm {formatPrice(product.originalPrice - product.price)}
-              </p>
-            )}
           </div>
 
           {product.variants && product.variants.length > 0 && (
@@ -138,31 +142,35 @@ export default function ProductDetail({
             </div>
           )}
 
-          <div className="mb-5">
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">Số lượng</h3>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center border border-gray-200 rounded-lg">
-                <button
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  className="w-9 h-9 text-gray-600 hover:bg-gray-50"
-                >
-                  −
-                </button>
-                <input
-                  value={qty}
-                  readOnly
-                  className="w-10 text-center border-x border-gray-200 py-2 text-sm"
-                />
-                <button
-                  onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
-                  className="w-9 h-9 text-gray-600 hover:bg-gray-50"
-                >
-                  +
-                </button>
+          {!isOutOfStock && (
+            <div className="mb-5">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Số lượng</h3>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center border border-gray-200 rounded-lg">
+                  <button
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    className="w-9 h-9 text-gray-600 hover:bg-gray-50"
+                  >
+                    −
+                  </button>
+                  <input
+                    value={qty}
+                    readOnly
+                    className="w-10 text-center border-x border-gray-200 py-2 text-sm"
+                  />
+                  <button
+                    onClick={() => setQty((q) => (isPreorder ? q + 1 : Math.min(product.stock, q + 1)))}
+                    className="w-9 h-9 text-gray-600 hover:bg-gray-50"
+                  >
+                    +
+                  </button>
+                </div>
+                <span className="text-xs text-gray-400">
+                  {isPreorder ? "Hàng đặt trước" : `Còn ${product.stock} sản phẩm`}
+                </span>
               </div>
-              <span className="text-xs text-gray-400">Còn {product.stock} sản phẩm</span>
             </div>
-          </div>
+          )}
 
           {product.comboItems && product.comboItems.length > 0 && (
             <div className="mb-5 border border-dashed border-blue-200 rounded-xl p-4 bg-blue-50/40">
@@ -189,23 +197,40 @@ export default function ProductDetail({
             </div>
           )}
 
-          <div className="flex gap-3 mb-5">
-            <button
-              onClick={handleAddToCart}
-              className="flex-1 border-2 border-blue-700 text-blue-700 font-bold py-3 rounded-xl hover:bg-blue-50 transition"
+          {isOutOfStock ? (
+            <div className="mb-5 bg-gray-100 text-gray-500 font-semibold text-center py-3 rounded-xl">
+              Hết hàng
+            </div>
+          ) : (
+            <div className="flex gap-3 mb-5">
+              <button
+                onClick={handleAddToCart}
+                className="flex-1 border-2 border-blue-700 text-blue-700 font-bold py-3 rounded-xl hover:bg-blue-50 transition"
+              >
+                Thêm vào giỏ hàng
+              </button>
+              <button
+                onClick={() => {
+                  handleAddToCart();
+                  openDrawer();
+                }}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-red-500/30"
+              >
+                {isPreorder ? "Đặt hàng trước" : "Mua ngay"}
+              </button>
+            </div>
+          )}
+
+          {product.shopeeLink && (
+            <a
+              href={product.shopeeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-5 flex items-center justify-center gap-2 border-2 border-orange-500 text-orange-600 font-bold py-3 rounded-xl hover:bg-orange-50 transition"
             >
-              Thêm vào giỏ hàng
-            </button>
-            <button
-              onClick={() => {
-                handleAddToCart();
-                openDrawer();
-              }}
-              className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-red-500/30"
-            >
-              Mua ngay
-            </button>
-          </div>
+              🛒 Xem trên Shopee
+            </a>
+          )}
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs text-gray-500">
             <div className="flex flex-col items-center gap-1 bg-gray-50 rounded-lg p-3 text-center">
@@ -224,67 +249,40 @@ export default function ProductDetail({
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="mt-10">
-        <div className="flex gap-6 border-b border-gray-200 mb-6">
-          {TABS.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`pb-3 text-sm font-semibold border-b-2 transition ${
-                tab === t.key ? "border-blue-700 text-blue-700" : "border-transparent text-gray-500"
-              }`}
-            >
-              {t.label} {t.key === "reviews" ? `(${reviews.length})` : ""}
-            </button>
-          ))}
-        </div>
-
-        {tab === "description" && (
-          <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line max-w-3xl">
-            {product.description}
-          </p>
-        )}
-
-        {tab === "specs" && (
-          <div className="max-w-2xl divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
-            {Object.entries(product.specs).map(([key, value]) => (
-              <div key={key} className="flex text-sm">
-                <span className="w-1/3 bg-gray-50 px-4 py-2.5 font-medium text-gray-600">{key}</span>
-                <span className="flex-1 px-4 py-2.5 text-gray-700">{value}</span>
-              </div>
-            ))}
+      {/* Product info sections — content edited by admin in WooCommerce */}
+      <div className="mt-10 max-w-3xl space-y-8">
+        {product.policyNoteHtml && (
+          <div>
+            <h2 className="font-bold text-lg text-gray-900 mb-3">Chính sách sản phẩm</h2>
+            <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: product.policyNoteHtml }} />
           </div>
         )}
 
-        {tab === "reviews" && (
-          <div className="max-w-3xl space-y-4">
-            {reviews.length === 0 && <p className="text-sm text-gray-500">Chưa có đánh giá nào.</p>}
-            {reviews.map((r) => (
-              <div key={r.id} className="border border-gray-100 rounded-xl p-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
-                    {r.author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800">
-                      {r.author}{" "}
-                      {r.verified && (
-                        <span className="text-[10px] text-green-600 font-medium">✓ Đã mua hàng</span>
-                      )}
-                    </p>
-                    <div className="flex items-center gap-1 text-xs text-gray-400">
-                      {Array.from({ length: 5 }, (_, i) => (
-                        <StarIcon key={i} className={`w-3 h-3 ${i < r.rating ? "text-yellow-400" : "text-gray-200"}`} />
-                      ))}
-                      <span>{r.date}</span>
-                      {r.variantTag && <span>• Phân loại: {r.variantTag}</span>}
-                    </div>
-                  </div>
+        {product.descriptionHtml && (
+          <div>
+            <h2 className="font-bold text-lg text-gray-900 mb-3">Thông tin sản phẩm</h2>
+            <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+          </div>
+        )}
+
+        {Object.keys(product.specs).length > 0 && (
+          <div>
+            <h2 className="font-bold text-lg text-gray-900 mb-3">Thông số kỹ thuật</h2>
+            <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+              {Object.entries(product.specs).map(([key, value]) => (
+                <div key={key} className="flex text-sm">
+                  <span className="w-1/3 bg-gray-50 px-4 py-2.5 font-medium text-gray-600">{key}</span>
+                  <span className="flex-1 px-4 py-2.5 text-gray-700">{value}</span>
                 </div>
-                <p className="text-sm text-gray-600">{r.text}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+        )}
+
+        {warrantyPolicyHtml && (
+          <div>
+            <h2 className="font-bold text-lg text-gray-900 mb-3">Chính sách bảo hành</h2>
+            <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: warrantyPolicyHtml }} />
           </div>
         )}
       </div>
@@ -295,7 +293,7 @@ export default function ProductDetail({
           <h2 className="text-lg font-black text-gray-900 mb-4">Sản phẩm liên quan</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} size="compact" />
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </div>

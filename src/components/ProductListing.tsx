@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from "react";
 import ProductCard from "./ProductCard";
-import { products } from "@/data/products";
-import { brands } from "@/data/brands";
+import type { Product } from "@/data/types";
 
 type SortKey = "ban-chay" | "moi-nhat" | "gia-tang" | "gia-giam";
 
@@ -17,9 +16,11 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
 const PAGE_SIZE = 12;
 
 export default function ProductListing({
+  products,
   initialCategory,
   initialQuery,
 }: {
+  products: Product[];
   initialCategory?: string;
   initialQuery?: string;
 }) {
@@ -30,11 +31,12 @@ export default function ProductListing({
   const [page, setPage] = useState(1);
 
   const brandOptions = useMemo(() => {
-    return brands.map((b) => ({
-      name: b.name,
-      count: products.filter((p) => p.brand === b.name).length,
+    const names = Array.from(new Set(products.map((p) => p.brand)));
+    return names.map((name) => ({
+      name,
+      count: products.filter((p) => p.brand === name).length,
     }));
-  }, []);
+  }, [products]);
 
   const toggleBrand = (name: string) => {
     setSelectedBrands((prev) =>
@@ -54,12 +56,12 @@ export default function ProductListing({
 
     const sorted = [...list];
     if (sort === "ban-chay") sorted.sort((a, b) => b.soldCount - a.soldCount);
-    else if (sort === "moi-nhat") sorted.sort((a, b) => b.id.localeCompare(a.id));
+    else if (sort === "moi-nhat") sorted.sort((a, b) => Number(b.id) - Number(a.id));
     else if (sort === "gia-tang") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "gia-giam") sorted.sort((a, b) => b.price - a.price);
 
     return sorted;
-  }, [category, selectedBrands, query, sort]);
+  }, [products, category, selectedBrands, query, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);

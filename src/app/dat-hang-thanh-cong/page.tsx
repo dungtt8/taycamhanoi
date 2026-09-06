@@ -1,8 +1,20 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-export default function OrderSuccessPage() {
+export const metadata: Metadata = {
+  title: "Đặt hàng thành công",
+  robots: { index: false, follow: false },
+};
+
+export default async function OrderSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ order?: string }>;
+}) {
+  const { order } = await searchParams;
+
   return (
     <>
       <Header variant="minimal" checkoutStep="success" />
@@ -11,6 +23,11 @@ export default function OrderSuccessPage() {
           ✓
         </div>
         <h1 className="text-2xl font-black text-gray-900 mb-2">Đặt hàng thành công!</h1>
+        {order && (
+          <p className="text-sm text-gray-600 mb-2">
+            Mã đơn hàng: <span className="font-bold text-gray-900">#{order}</span>
+          </p>
+        )}
         <p className="text-gray-500 mb-8">
           Cảm ơn bạn đã mua sắm tại TAYCAMHANOI. Đơn hàng của bạn đang được xử lý, chúng tôi sẽ liên hệ xác nhận trong thời gian sớm nhất.
         </p>

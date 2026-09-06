@@ -1,10 +1,38 @@
+import type { Metadata } from "next";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductListing from "@/components/ProductListing";
-import { categories } from "@/data/categories";
+import { SITE_URL } from "@/lib/site";
+import { getAllWooProducts, getWooCategories } from "@/lib/woocommerce";
+import { mapWooProduct, stripHtml } from "@/lib/woo-adapter";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string; q?: string }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const wooCategories = await getWooCategories();
+  const activeCategory = wooCategories.find((c) => c.slug === params.category);
+
+  const title = activeCategory ? activeCategory.name : "Tất cả sản phẩm";
+  const description = activeCategory
+    ? stripHtml(activeCategory.description) || `Sản phẩm thuộc danh mục ${activeCategory.name}.`
+    : "Toàn bộ tay cầm & phụ kiện gaming chính hãng tại TAYCAMHANOI.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: activeCategory
+        ? `${SITE_URL}/san-pham?category=${activeCategory.slug}`
+        : `${SITE_URL}/san-pham`,
+    },
+  };
+}
 
 export default async function ProductListingPage({
   searchParams,
@@ -12,7 +40,12 @@ export default async function ProductListingPage({
   searchParams: Promise<{ category?: string; q?: string }>;
 }) {
   const params = await searchParams;
-  const activeCategory = categories.find((c) => c.slug === params.category);
+  const [wooCategories, wooProducts] = await Promise.all([
+    getWooCategories(),
+    getAllWooProducts(),
+  ]);
+  const activeCategory = wooCategories.find((c) => c.slug === params.category);
+  const products = wooProducts.map(mapWooProduct);
 
   return (
     <>
@@ -33,13 +66,14 @@ export default async function ProductListingPage({
           </h1>
           <p className="text-blue-100 text-sm max-w-2xl">
             {activeCategory
-              ? activeCategory.description
+              ? stripHtml(activeCategory.description) || `Sản phẩm thuộc danh mục ${activeCategory.name}.`
               : "Toàn bộ tay cầm & phụ kiện gaming chính hãng tại TAYCAMHANOI."}
           </p>
         </div>
       </section>
 
       <ProductListing
+        products={products}
         initialCategory={params.category}
         initialQuery={params.q}
       />

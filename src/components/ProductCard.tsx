@@ -1,26 +1,30 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/data/types";
 import { formatPrice } from "@/lib/format";
 import { StarIcon } from "./icons";
 
-export default function ProductCard({
-  product,
-  size = "default",
-}: {
-  product: Product;
-  size?: "default" | "compact";
-}) {
+export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/san-pham/${product.slug}`}
+      prefetch={false}
       className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition overflow-hidden flex flex-col"
     >
       <div
-        className={`relative flex items-center justify-center bg-gradient-to-br ${product.colorFrom} ${product.colorTo} ${
-          size === "compact" ? "h-32" : "h-40"
-        }`}
+        className={`relative flex items-center justify-center aspect-square bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
       >
-        <span className="relative text-5xl">{product.emoji}</span>
+        {product.imageUrl ? (
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 50vw, 20vw"
+          />
+        ) : (
+          <span className="relative text-5xl">{product.emoji}</span>
+        )}
         {product.discountPercent && (
           <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">
             -{product.discountPercent}%

@@ -78,6 +78,19 @@ export function SupportIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+export function GamepadIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M6 12h4m-2-2v4m7-1h.01M18 9h.01M15 15.5a4.5 4.5 0 004.472-5.03A3 3 0 0016.5 7h-9A3 3 0 004.528 10.47 4.5 4.5 0 009 15.5m6 0a2.5 2.5 0 015 0v.5a3 3 0 01-3 3h-1l-1.5-2h-5L8 19H7a3 3 0 01-3-3v-.5a2.5 2.5 0 015 0"
+      />
+    </svg>
+  );
+}
+
 export function ChevronDownIcon({ className = "w-3 h-3" }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">

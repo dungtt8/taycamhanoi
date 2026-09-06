@@ -5,6 +5,7 @@ export interface CartItem {
   emoji: string;
   colorFrom: string;
   colorTo: string;
+  imageUrl?: string;
   price: number;
   variant?: string;
   qty: number;

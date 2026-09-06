@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/format";
+import { createOrderAction } from "@/lib/orders";
 import { TrashIcon } from "./icons";
 
 type ShippingMethod = "standard" | "fast" | "express";
@@ -16,44 +18,53 @@ const SHIPPING_OPTIONS: { key: ShippingMethod; label: string; price: number; des
   { key: "express", label: "Hỏa tốc", price: 45000, description: "Giao trong ngày (nội thành)" },
 ];
 
-const VOUCHERS: Record<string, number> = {
-  TAYCAM50: 50000,
-  FREESHIP: 25000,
-};
+interface BillingForm {
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  city: string;
+  note: string;
+}
+
+const EMPTY_BILLING: BillingForm = { name: "", phone: "", email: "", address: "", city: "", note: "" };
 
 export default function CheckoutForm() {
   const router = useRouter();
   const { items, subtotal, removeItem, clearCart } = useCart();
   const [shipping, setShipping] = useState<ShippingMethod>("standard");
   const [payment, setPayment] = useState<PaymentMethod>("cod");
-  const [voucherInput, setVoucherInput] = useState("");
-  const [voucherApplied, setVoucherApplied] = useState<string | null>(null);
-  const [voucherError, setVoucherError] = useState("");
+  const [billing, setBilling] = useState<BillingForm>(EMPTY_BILLING);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const shippingFee = SHIPPING_OPTIONS.find((s) => s.key === shipping)?.price ?? 0;
-  const voucherDiscount = voucherApplied ? VOUCHERS[voucherApplied] ?? 0 : 0;
-  const total = Math.max(0, subtotal + shippingFee - voucherDiscount);
+  const total = subtotal + shippingFee;
 
   const [orderCode, setOrderCode] = useState("");
   useEffect(() => {
     setOrderCode(`TCH${Date.now().toString().slice(-8)}`);
   }, []);
 
-  const applyVoucher = () => {
-    const code = voucherInput.trim().toUpperCase();
-    if (VOUCHERS[code]) {
-      setVoucherApplied(code);
-      setVoucherError("");
-    } else {
-      setVoucherError("Mã giảm giá không hợp lệ");
-      setVoucherApplied(null);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearCart();
-    router.push("/dat-hang-thanh-cong");
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const shippingOption = SHIPPING_OPTIONS.find((s) => s.key === shipping)!;
+      const result = await createOrderAction({
+        billing,
+        shippingLabel: shippingOption.label,
+        shippingFee: shippingOption.price,
+        paymentMethod: payment,
+        items: items.map((item) => ({ productId: item.productId, quantity: item.qty })),
+      });
+      clearCart();
+      router.push(`/dat-hang-thanh-cong?order=${encodeURIComponent(result.orderNumber)}`);
+    } catch {
+      setSubmitError("Không thể tạo đơn hàng. Vui lòng kiểm tra lại thông tin hoặc thử lại sau.");
+      setSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
@@ -83,11 +94,41 @@ export default function CheckoutForm() {
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input required placeholder="Họ và tên" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-1" />
-              <input required placeholder="Số điện thoại" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-1" />
-              <input required type="email" placeholder="Email" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2" />
-              <input required placeholder="Địa chỉ" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2" />
-              <select required defaultValue="" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
+              <input
+                required
+                placeholder="Họ và tên"
+                value={billing.name}
+                onChange={(e) => setBilling((b) => ({ ...b, name: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-1"
+              />
+              <input
+                required
+                placeholder="Số điện thoại"
+                value={billing.phone}
+                onChange={(e) => setBilling((b) => ({ ...b, phone: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-1"
+              />
+              <input
+                required
+                type="email"
+                placeholder="Email"
+                value={billing.email}
+                onChange={(e) => setBilling((b) => ({ ...b, email: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2"
+              />
+              <input
+                required
+                placeholder="Địa chỉ"
+                value={billing.address}
+                onChange={(e) => setBilling((b) => ({ ...b, address: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2"
+              />
+              <select
+                required
+                value={billing.city}
+                onChange={(e) => setBilling((b) => ({ ...b, city: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm"
+              >
                 <option value="" disabled>Tỉnh/Thành phố</option>
                 <option>Hà Nội</option>
                 <option>TP. Hồ Chí Minh</option>
@@ -97,7 +138,13 @@ export default function CheckoutForm() {
                 <option value="" disabled>Quận/Huyện</option>
                 <option>Quận khác</option>
               </select>
-              <textarea placeholder="Ghi chú giao hàng (không bắt buộc)" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2" rows={2} />
+              <textarea
+                placeholder="Ghi chú giao hàng (không bắt buộc)"
+                value={billing.note}
+                onChange={(e) => setBilling((b) => ({ ...b, note: e.target.value }))}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm sm:col-span-2"
+                rows={2}
+              />
             </div>
           </div>
 
@@ -194,8 +241,12 @@ export default function CheckoutForm() {
             <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
               {items.map((item) => (
                 <div key={`${item.productId}-${item.variant ?? ""}`} className="flex items-center gap-3">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xl bg-gradient-to-br ${item.colorFrom} ${item.colorTo}`}>
-                    {item.emoji}
+                  <div className={`w-12 h-12 rounded-lg overflow-hidden relative flex items-center justify-center text-xl bg-gradient-to-br ${item.colorFrom} ${item.colorTo}`}>
+                    {item.imageUrl ? (
+                      <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="48px" />
+                    ) : (
+                      item.emoji
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800 line-clamp-1">{item.name}</p>
@@ -211,28 +262,6 @@ export default function CheckoutForm() {
               ))}
             </div>
 
-            <div className="flex gap-2 mb-4">
-              <input
-                value={voucherInput}
-                onChange={(e) => setVoucherInput(e.target.value)}
-                placeholder="Mã giảm giá"
-                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm"
-              />
-              <button
-                type="button"
-                onClick={applyVoucher}
-                className="px-4 py-2 bg-gray-800 text-white text-sm font-semibold rounded-lg hover:bg-gray-900"
-              >
-                Áp dụng
-              </button>
-            </div>
-            {voucherError && <p className="text-xs text-red-500 -mt-3 mb-3">{voucherError}</p>}
-            {voucherApplied && (
-              <p className="text-xs text-green-600 -mt-3 mb-3">
-                Đã áp dụng mã {voucherApplied}: -{formatPrice(voucherDiscount)}
-              </p>
-            )}
-
             <div className="space-y-2 text-sm border-t border-gray-100 pt-3">
               <div className="flex justify-between text-gray-600">
                 <span>Tạm tính</span>
@@ -242,23 +271,19 @@ export default function CheckoutForm() {
                 <span>Phí vận chuyển</span>
                 <span>{shippingFee === 0 ? "Miễn phí" : formatPrice(shippingFee)}</span>
               </div>
-              {voucherDiscount > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>Giảm giá voucher</span>
-                  <span>-{formatPrice(voucherDiscount)}</span>
-                </div>
-              )}
               <div className="flex justify-between text-base font-black text-gray-900 border-t border-gray-100 pt-2">
                 <span>Tổng cộng</span>
                 <span className="text-red-600">{formatPrice(total)}</span>
               </div>
             </div>
 
+            {submitError && <p className="text-xs text-red-500 text-center mt-3">{submitError}</p>}
             <button
               type="submit"
-              className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3.5 rounded-xl mt-4 transition shadow-lg shadow-red-500/30"
+              disabled={submitting}
+              className="w-full bg-red-500 hover:bg-red-600 disabled:opacity-60 text-white font-bold py-3.5 rounded-xl mt-4 transition shadow-lg shadow-red-500/30"
             >
-              ĐẶT HÀNG NGAY
+              {submitting ? "ĐANG XỬ LÝ..." : "ĐẶT HÀNG NGAY"}
             </button>
             <p className="text-[11px] text-gray-400 text-center mt-3">
               Bằng việc đặt hàng, bạn đồng ý với Điều khoản dịch vụ của TAYCAMHANOI.

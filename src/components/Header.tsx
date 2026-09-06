@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { HeartIcon, UserIcon } from "./icons";
-import Nav from "./Nav";
+import Nav, { type NavActive } from "./Nav";
 import CartButton from "./CartButton";
 import SearchBar from "./SearchBar";
 
@@ -11,7 +11,7 @@ export type CheckoutStep = "cart" | "checkout" | "success";
 interface HeaderProps {
   variant: HeaderVariant;
   showNav?: boolean;
-  navActive?: "home" | "products";
+  navActive?: NavActive;
   checkoutStep?: CheckoutStep;
 }
 
