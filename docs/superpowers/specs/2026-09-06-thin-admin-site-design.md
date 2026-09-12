@@ -48,14 +48,20 @@ Tính năng có trong bản này:
      mu-plugin nhỏ (xem "Thay đổi ở repo chính")
    - Thiết kế mở để thêm field cấu hình khác sau này vào cùng màn hình,
      không cần màn hình riêng cho mỗi field
+5. **Danh mục & Thương hiệu** (bổ sung sau khi viết plan triển khai —
+   ban đầu để ở "Ngoài phạm vi", người dùng yêu cầu đưa vào)
+   - Xem danh sách, thêm mới, sửa (tên, mô tả, ảnh minh hoạ) — không xoá
+     (xoá category/brand đang gắn sản phẩm dễ gây lỗi, để lại cho wp-admin
+     nếu cần)
+   - `wc/v3/products/categories` và `wc/v3/products/brands` — cùng hình
+     dạng REST, dùng chung 1 module implement
 
 Ngoài phạm vi (không làm trong bản này):
 
 - Phân quyền nhiều role/nhiều mức quyền
 - Audit log / lịch sử thao tác
 - Thông báo real-time (đơn mới, hết hàng...)
-- Quản lý bài viết (Posts), trang Chính sách, category/brand sản phẩm — vẫn
-  dùng wp-admin
+- Quản lý bài viết (Posts), trang Chính sách — vẫn dùng wp-admin
 - Custom UI upload ảnh (dùng WordPress Media REST API cơ bản, không xây
   trình quản lý file riêng)
 - **Tích hợp Nhanh.vn**: chưa có tài khoản/API key tại thời điểm viết spec
