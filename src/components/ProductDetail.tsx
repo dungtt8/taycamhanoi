@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Product } from "@/data/types";
@@ -26,6 +26,21 @@ export default function ProductDetail({
   const gallery = product.images && product.images.length > 0 ? product.images : null;
   const isOutOfStock = product.stockStatus === "outofstock";
   const isPreorder = product.stockStatus === "onbackorder";
+  const [isPaused, setIsPaused] = useState(false);
+  const galleryLength = gallery?.length ?? 0;
+
+  useEffect(() => {
+    if (!gallery || galleryLength < 2 || isPaused) return;
+    const timer = setInterval(() => {
+      setActiveImage((i) => (i + 1) % galleryLength);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [gallery, galleryLength, isPaused]);
+
+  const goToImage = (i: number) => {
+    setActiveImage(i);
+    setIsPaused(true);
+  };
 
   const comboTotal = (product.comboItems ?? []).reduce(
     (sum, item) => (comboSelected[item.name] ? sum + item.price : sum),
@@ -51,19 +66,43 @@ export default function ProductDetail({
     <section className="max-w-7xl mx-auto px-4 py-6">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Gallery */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-7">
           <div
-            className={`aspect-square rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
+            className={`group aspect-square rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
             {gallery ? (
-              <Image
-                src={gallery[activeImage]}
-                alt={product.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 40vw"
-                priority
-              />
+              <>
+                <Image
+                  src={gallery[activeImage]}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  priority
+                />
+                {galleryLength > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => goToImage((activeImage - 1 + galleryLength) % galleryLength)}
+                      aria-label="Ảnh trước"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => goToImage((activeImage + 1) % galleryLength)}
+                      aria-label="Ảnh sau"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
+              </>
             ) : (
               product.emoji
             )}
@@ -73,7 +112,7 @@ export default function ProductDetail({
               {gallery.map((src, i) => (
                 <button
                   key={src}
-                  onClick={() => setActiveImage(i)}
+                  onClick={() => goToImage(i)}
                   className={`w-14 h-14 rounded-lg overflow-hidden relative border-2 transition ${
                     activeImage === i ? "border-blue-600" : "border-gray-200"
                   } bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
@@ -86,7 +125,7 @@ export default function ProductDetail({
         </div>
 
         {/* Info */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-5">
           <div className="flex items-center gap-2 mb-2">
             {product.categoryName && (
               <Link
@@ -250,24 +289,15 @@ export default function ProductDetail({
       </div>
 
       {/* Product info sections — content edited by admin in WooCommerce */}
-      <div className="mt-10 max-w-3xl space-y-8">
-        {product.policyNoteHtml && (
-          <div>
-            <h2 className="font-bold text-lg text-gray-900 mb-3">Chính sách sản phẩm</h2>
-            <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: product.policyNoteHtml }} />
-          </div>
-        )}
-
+      <div className="mt-10 space-y-3">
         {product.descriptionHtml && (
-          <div>
-            <h2 className="font-bold text-lg text-gray-900 mb-3">Thông tin sản phẩm</h2>
+          <InfoSection title="Mô tả sản phẩm">
             <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-          </div>
+          </InfoSection>
         )}
 
         {Object.keys(product.specs).length > 0 && (
-          <div>
-            <h2 className="font-bold text-lg text-gray-900 mb-3">Thông số kỹ thuật</h2>
+          <InfoSection title="Thông số kỹ thuật">
             <div className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
               {Object.entries(product.specs).map(([key, value]) => (
                 <div key={key} className="flex text-sm">
@@ -276,14 +306,27 @@ export default function ProductDetail({
                 </div>
               ))}
             </div>
-          </div>
+          </InfoSection>
+        )}
+
+        {product.boxContents && (
+          <InfoSection title="Trong hộp có gì">
+            <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+              {product.boxContents}
+            </div>
+          </InfoSection>
+        )}
+
+        {product.policyNoteHtml && (
+          <InfoSection title="Chính sách sản phẩm">
+            <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: product.policyNoteHtml }} />
+          </InfoSection>
         )}
 
         {warrantyPolicyHtml && (
-          <div>
-            <h2 className="font-bold text-lg text-gray-900 mb-3">Chính sách bảo hành</h2>
+          <InfoSection title="Chính sách bảo hành">
             <div className={RICH_TEXT_CLASS} dangerouslySetInnerHTML={{ __html: warrantyPolicyHtml }} />
-          </div>
+          </InfoSection>
         )}
       </div>
 
@@ -299,5 +342,25 @@ export default function ProductDetail({
         </div>
       )}
     </section>
+  );
+}
+
+function InfoSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <details className="group rounded-2xl border border-gray-200 bg-white open:shadow-sm transition-shadow" open>
+      <summary className="flex items-center justify-between gap-3 cursor-pointer list-none select-none px-5 py-4 font-bold text-gray-900 marker:content-none [&::-webkit-details-marker]:hidden">
+        <span>{title}</span>
+        <svg
+          className="w-5 h-5 shrink-0 text-gray-400 transition-transform duration-200 group-open:rotate-180"
+          viewBox="0 0 20 20"
+          fill="none"
+        >
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </summary>
+      <div className="px-5 pb-5 pt-0 border-t border-gray-100 mt-0">
+        <div className="pt-4">{children}</div>
+      </div>
+    </details>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -116,7 +117,14 @@ export default async function HomePage() {
                 href={`/thuong-hieu/${brand.slug}`}
                 className="shrink-0 flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:border-blue-400 hover:text-blue-700 transition"
               >
-                <span>🏷️</span> {brand.name}
+                {brand.image ? (
+                  <span className="relative w-5 h-5 rounded-full overflow-hidden bg-gray-50 shrink-0">
+                    <Image src={brand.image.src} alt={brand.name} fill className="object-contain" sizes="20px" />
+                  </span>
+                ) : (
+                  <span>🏷️</span>
+                )}
+                {brand.name}
               </Link>
             ))}
           </div>

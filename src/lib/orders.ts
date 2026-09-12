@@ -8,6 +8,7 @@ export interface CreateOrderInput {
     phone: string;
     email: string;
     address: string;
+    ward: string;
     city: string;
     note?: string;
   };
@@ -36,7 +37,7 @@ export async function createOrderAction(input: CreateOrderInput) {
   const address = {
     first_name: firstName,
     last_name: lastName,
-    address_1: input.billing.address,
+    address_1: `${input.billing.address}, ${input.billing.ward}`,
     city: input.billing.city,
     email: input.billing.email,
     phone: input.billing.phone,

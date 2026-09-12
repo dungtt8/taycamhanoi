@@ -8,6 +8,7 @@ import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/format";
 import { createOrderAction } from "@/lib/orders";
 import { TrashIcon } from "./icons";
+import { VIETNAM_PROVINCES } from "@/data/vietnam-locations";
 
 type ShippingMethod = "standard" | "fast" | "express";
 type PaymentMethod = "cod" | "vietqr" | "vnpay";
@@ -24,10 +25,19 @@ interface BillingForm {
   email: string;
   address: string;
   city: string;
+  ward: string;
   note: string;
 }
 
-const EMPTY_BILLING: BillingForm = { name: "", phone: "", email: "", address: "", city: "", note: "" };
+const EMPTY_BILLING: BillingForm = {
+  name: "",
+  phone: "",
+  email: "",
+  address: "",
+  city: "",
+  ward: "",
+  note: "",
+};
 
 export default function CheckoutForm() {
   const router = useRouter();
@@ -126,17 +136,25 @@ export default function CheckoutForm() {
               <select
                 required
                 value={billing.city}
-                onChange={(e) => setBilling((b) => ({ ...b, city: e.target.value }))}
+                onChange={(e) => setBilling((b) => ({ ...b, city: e.target.value, ward: "" }))}
                 className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm"
               >
                 <option value="" disabled>Tỉnh/Thành phố</option>
-                <option>Hà Nội</option>
-                <option>TP. Hồ Chí Minh</option>
-                <option>Đà Nẵng</option>
+                {VIETNAM_PROVINCES.map((p) => (
+                  <option key={p.name}>{p.name}</option>
+                ))}
               </select>
-              <select required defaultValue="" className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm">
-                <option value="" disabled>Quận/Huyện</option>
-                <option>Quận khác</option>
+              <select
+                required
+                value={billing.ward}
+                onChange={(e) => setBilling((b) => ({ ...b, ward: e.target.value }))}
+                disabled={!billing.city}
+                className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm disabled:bg-gray-50 disabled:text-gray-400"
+              >
+                <option value="" disabled>Phường/Xã</option>
+                {(VIETNAM_PROVINCES.find((p) => p.name === billing.city)?.wards ?? []).map((d) => (
+                  <option key={d}>{d}</option>
+                ))}
               </select>
               <textarea
                 placeholder="Ghi chú giao hàng (không bắt buộc)"

@@ -30,6 +30,7 @@ export interface Product {
   descriptionHtml?: string;
   policyNoteHtml?: string;
   shopeeLink?: string;
+  boxContents?: string;
 }
 
 export interface ProductVariant {

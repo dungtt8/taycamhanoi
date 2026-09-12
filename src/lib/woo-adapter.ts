@@ -27,6 +27,12 @@ export function mapWooProduct(p: WooProduct): Product {
   const shopeeLinkMeta = p.meta_data?.find((m) => m.key === "shopee_link");
   const shopeeLink = typeof shopeeLinkMeta?.value === "string" ? shopeeLinkMeta.value : undefined;
 
+  const boxContentsMeta = p.meta_data?.find((m) => m.key === "box_contents");
+  const boxContents =
+    typeof boxContentsMeta?.value === "string" && boxContentsMeta.value.trim() !== ""
+      ? boxContentsMeta.value
+      : undefined;
+
   return {
     id: String(p.id),
     slug: p.slug,
@@ -56,5 +62,6 @@ export function mapWooProduct(p: WooProduct): Product {
     imageUrl: p.images[0]?.src,
     images: p.images.length > 0 ? p.images.map((img) => img.src) : undefined,
     shopeeLink,
+    boxContents,
   };
 }

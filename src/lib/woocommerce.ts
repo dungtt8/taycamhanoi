@@ -115,6 +115,7 @@ export interface WooBrand {
   slug: string;
   description: string;
   count: number;
+  image: { src: string } | null;
 }
 
 /**

@@ -4,6 +4,7 @@ import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GuideArticle from "@/components/GuideArticle";
+import HelpfulWidget from "@/components/HelpfulWidget";
 import Breadcrumb from "@/components/Breadcrumb";
 import { getWpPostBySlug } from "@/lib/wordpress";
 import { extractHeadingsAndInjectIds } from "@/lib/toc";
@@ -41,6 +42,8 @@ export default async function GuideArticlePage({ params }: { params: Promise<{ s
       />
       <div className="max-w-6xl mx-auto px-4 py-8">
         <GuideArticle titleHtml={post.title.rendered} contentHtml={html} headings={headings} />
+
+        <HelpfulWidget />
 
         <div className="mt-10 bg-blue-700 rounded-2xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>

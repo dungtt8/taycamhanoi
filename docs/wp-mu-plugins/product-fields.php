@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: TAYCAMHANOI - Product Custom Fields
- * Description: Adds a dedicated "Shopee" meta box to the product edit screen
- * instead of relying on the generic Custom Fields panel. The saved value is
- * plain post meta (key: shopee_link), read by the Next.js frontend via
- * WooCommerce's REST API `meta_data` field — no extra plugin needed.
+ * Description: Adds a dedicated meta box to the product edit screen for
+ * fields the generic Custom Fields panel is too clunky for (Shopee link,
+ * box contents). Saved as plain post meta (keys: shopee_link,
+ * box_contents), read by the Next.js frontend via WooCommerce's REST API
+ * `meta_data` field — no extra plugin needed.
  */
 
 if (!defined('ABSPATH')) {
@@ -14,7 +15,7 @@ if (!defined('ABSPATH')) {
 add_action('add_meta_boxes', function () {
     add_meta_box(
         'taycamhanoi_shopee_link',
-        'Link Shopee',
+        'Thông tin bổ sung',
         'taycamhanoi_render_shopee_meta_box',
         'product',
         'side',
@@ -25,7 +26,8 @@ add_action('add_meta_boxes', function () {
 function taycamhanoi_render_shopee_meta_box($post)
 {
     wp_nonce_field('taycamhanoi_save_shopee_link', 'taycamhanoi_shopee_link_nonce');
-    $value = get_post_meta($post->ID, 'shopee_link', true);
+    $shopee_link = get_post_meta($post->ID, 'shopee_link', true);
+    $box_contents = get_post_meta($post->ID, 'box_contents', true);
     ?>
     <label for="taycamhanoi_shopee_link_input" style="display:block;margin-bottom:6px;">
         Link sản phẩm trên Shopee
@@ -34,10 +36,19 @@ function taycamhanoi_render_shopee_meta_box($post)
         type="url"
         id="taycamhanoi_shopee_link_input"
         name="shopee_link"
-        value="<?php echo esc_attr($value); ?>"
+        value="<?php echo esc_attr($shopee_link); ?>"
         placeholder="https://shopee.vn/..."
-        style="width:100%;"
+        style="width:100%;margin-bottom:12px;"
     />
+    <label for="taycamhanoi_box_contents_input" style="display:block;margin-bottom:6px;">
+        Trong hộp có gì (mỗi dòng 1 mục)
+    </label>
+    <textarea
+        id="taycamhanoi_box_contents_input"
+        name="box_contents"
+        rows="4"
+        style="width:100%;"
+    ><?php echo esc_textarea($box_contents); ?></textarea>
     <?php
 }
 
@@ -55,5 +66,9 @@ add_action('save_post_product', function ($post_id) {
 
     if (isset($_POST['shopee_link'])) {
         update_post_meta($post_id, 'shopee_link', esc_url_raw($_POST['shopee_link']));
+    }
+
+    if (isset($_POST['box_contents'])) {
+        update_post_meta($post_id, 'box_contents', sanitize_textarea_field($_POST['box_contents']));
     }
 });

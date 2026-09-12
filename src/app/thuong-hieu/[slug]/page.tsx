@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import type { Metadata } from "next";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
@@ -62,8 +63,14 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
       {/* Brand hero */}
       <section className="max-w-7xl mx-auto px-4 pb-6">
         <div className="rounded-2xl bg-gradient-to-br from-blue-900 to-blue-700 p-6 lg:p-10 text-white">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-3xl">🏷️</span>
+          <div className="flex items-center gap-3 mb-3">
+            {term.image ? (
+              <span className="relative w-12 h-12 rounded-xl overflow-hidden bg-white shrink-0">
+                <Image src={term.image.src} alt={term.name} fill className="object-contain p-1" sizes="48px" />
+              </span>
+            ) : (
+              <span className="text-3xl">🏷️</span>
+            )}
             <h1 className="text-2xl lg:text-3xl font-black">{term.name}</h1>
           </div>
           <p className="text-blue-100 text-sm mb-5 max-w-lg">{description}</p>
