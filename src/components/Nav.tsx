@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getWooBrands } from "@/lib/woocommerce";
 import { HomeIcon, GridIcon, TagIcon, BlogIcon, SupportIcon, BoltIcon, GamepadIcon, ChevronDownIcon } from "./icons";
 
@@ -43,9 +44,16 @@ export default async function Nav({ active }: { active?: NavActive }) {
                   key={brand.slug}
                   href={`/thuong-hieu/${brand.slug}`}
                   prefetch={false}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
                 >
-                  🏷️ {brand.name}
+                  {brand.image ? (
+                    <span className="relative w-5 h-5 rounded-full overflow-hidden bg-gray-50 shrink-0">
+                      <Image src={brand.image.src} alt={brand.name} fill className="object-contain" sizes="20px" />
+                    </span>
+                  ) : (
+                    <span>🏷️</span>
+                  )}
+                  {brand.name}
                 </Link>
               ))}
             </div>
