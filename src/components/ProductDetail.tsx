@@ -27,6 +27,7 @@ export default function ProductDetail({
   const isOutOfStock = product.stockStatus === "outofstock";
   const isPreorder = product.stockStatus === "onbackorder";
   const [isPaused, setIsPaused] = useState(false);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
   const galleryLength = gallery?.length ?? 0;
 
   useEffect(() => {
@@ -74,14 +75,21 @@ export default function ProductDetail({
           >
             {gallery ? (
               <>
-                <Image
-                  src={gallery[activeImage]}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  priority
-                />
+                <button
+                  type="button"
+                  onClick={() => setIsZoomOpen(true)}
+                  aria-label="Phóng to ảnh"
+                  className="relative w-2/3 h-2/3 cursor-zoom-in"
+                >
+                  <Image
+                    src={gallery[activeImage]}
+                    alt={product.name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    priority
+                  />
+                </button>
                 {galleryLength > 1 && (
                   <>
                     <button
@@ -123,6 +131,31 @@ export default function ProductDetail({
             </div>
           )}
         </div>
+
+        {isZoomOpen && gallery && (
+          <div
+            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6"
+            onClick={() => setIsZoomOpen(false)}
+          >
+            <button
+              type="button"
+              onClick={() => setIsZoomOpen(false)}
+              aria-label="Đóng"
+              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 text-white text-xl flex items-center justify-center hover:bg-white/20"
+            >
+              ✕
+            </button>
+            <div className="relative w-full h-full max-w-4xl">
+              <Image
+                src={gallery[activeImage]}
+                alt={product.name}
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Info */}
         <div className="lg:col-span-5">
