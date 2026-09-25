@@ -12,18 +12,16 @@ export default function ProductCard({ product }: { product: Product }) {
       className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition overflow-hidden flex flex-col"
     >
       <div
-        className={`relative flex items-center justify-center aspect-square bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
+        className={`relative flex items-center justify-center aspect-[3/2] bg-gradient-to-br ${product.colorFrom} ${product.colorTo}`}
       >
         {product.imageUrl ? (
-          <div className="relative w-2/3 h-2/3">
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              fill
-              className="object-contain"
-              sizes="(max-width: 640px) 50vw, 20vw"
-            />
-          </div>
+          <Image
+            src={product.imageUrl}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 50vw, 20vw"
+          />
         ) : (
           <span className="relative text-5xl">{product.emoji}</span>
         )}

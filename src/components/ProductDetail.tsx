@@ -69,7 +69,7 @@ export default function ProductDetail({
         {/* Gallery */}
         <div className="lg:col-span-7">
           <div
-            className={`group aspect-square rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
+            className={`group aspect-[3/2] rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
@@ -79,13 +79,13 @@ export default function ProductDetail({
                   type="button"
                   onClick={() => setIsZoomOpen(true)}
                   aria-label="Phóng to ảnh"
-                  className="relative w-2/3 h-2/3 cursor-zoom-in"
+                  className="absolute inset-0 cursor-zoom-in"
                 >
                   <Image
                     src={gallery[activeImage]}
                     alt={product.name}
                     fill
-                    className="object-contain"
+                    className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 40vw"
                     priority
                   />
@@ -96,7 +96,7 @@ export default function ProductDetail({
                       type="button"
                       onClick={() => goToImage((activeImage - 1 + galleryLength) % galleryLength)}
                       aria-label="Ảnh trước"
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-400 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
                     >
                       ‹
                     </button>
@@ -104,7 +104,7 @@ export default function ProductDetail({
                       type="button"
                       onClick={() => goToImage((activeImage + 1) % galleryLength)}
                       aria-label="Ảnh sau"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 text-gray-400 flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:bg-white"
                     >
                       ›
                     </button>
