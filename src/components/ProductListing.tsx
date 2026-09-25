@@ -13,7 +13,7 @@ const SORT_OPTIONS: { key: SortKey; label: string }[] = [
   { key: "gia-giam", label: "Giá ↓" },
 ];
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 50;
 
 export default function ProductListing({
   products,
@@ -139,7 +139,7 @@ export default function ProductListing({
           {pageItems.length === 0 ? (
             <p className="text-center text-gray-500 py-16">Không tìm thấy sản phẩm phù hợp.</p>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {pageItems.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
