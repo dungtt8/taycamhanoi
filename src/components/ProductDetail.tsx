@@ -69,7 +69,7 @@ export default function ProductDetail({
         {/* Gallery */}
         <div className="lg:col-span-7">
           <div
-            className={`group aspect-[3/2] rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
+            className={`group w-2/3 aspect-[3/2] rounded-2xl overflow-hidden relative flex items-center justify-center text-8xl bg-gradient-to-br ${product.colorFrom} ${product.colorTo} mb-3`}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
