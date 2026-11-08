@@ -17,6 +17,7 @@ jobs:
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.WP_VPS_HOST }}
+          port: ${{ secrets.WP_VPS_PORT }}
           username: ${{ secrets.WP_VPS_USER }}
           key: ${{ secrets.WP_VPS_SSH_KEY }}
           source: "wordpress/deploy/docker-compose.yml,wordpress/deploy/wp-hardening,wordpress/deploy/php-config"
@@ -27,6 +28,7 @@ jobs:
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.WP_VPS_HOST }}
+          port: ${{ secrets.WP_VPS_PORT }}
           username: ${{ secrets.WP_VPS_USER }}
           key: ${{ secrets.WP_VPS_SSH_KEY }}
           script: |
