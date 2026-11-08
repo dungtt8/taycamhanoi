@@ -34,5 +34,6 @@ jobs:
           key: ${{ secrets.WP_VPS_SSH_KEY }}
           script: |
             cd /opt/taycamhanoi-wp
-            docker compose up -d
+            docker compose pull
+            docker compose up -d --renew-anon-volumes
             docker compose logs --tail 30 wp_woo
