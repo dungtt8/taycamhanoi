@@ -8,7 +8,7 @@ import ProductCard from "@/components/ProductCard";
 import CountdownTimer from "@/components/CountdownTimer";
 import NewsletterForm from "@/components/NewsletterForm";
 import { getWooProducts, getWooCategories, getWooBrands } from "@/lib/woocommerce";
-import { getWpPosts, getWpCategoryBySlug } from "@/lib/wordpress";
+import { getWpPosts, getWpCategoryBySlug, getHomepageSettings } from "@/lib/wordpress";
 import { mapWooProduct } from "@/lib/woo-adapter";
 
 export const revalidate = 60;
@@ -24,15 +24,19 @@ async function getLatestBlogPosts() {
 }
 
 export default async function HomePage() {
-  const [flashSaleWoo, newArrivalsWoo, categories, brandTerms, blogPosts] = await Promise.all([
+  const [flashSaleWoo, newArrivalsWoo, categories, brandTerms, blogPosts, homepageSettings] = await Promise.all([
     getWooProducts({ on_sale: "true", per_page: "5" }),
     getWooProducts({ orderby: "date", order: "desc", per_page: "4" }),
     getWooCategories(),
     getWooBrands(),
     getLatestBlogPosts(),
+    getHomepageSettings(),
   ]);
   const flashSale = flashSaleWoo.map(mapWooProduct);
   const newArrivals = newArrivalsWoo.map(mapWooProduct);
+  const hero = homepageSettings?.hero;
+  const promoBoxes = homepageSettings?.promo_boxes ?? [];
+  const newsletter = homepageSettings?.newsletter;
 
   return (
     <>
@@ -43,25 +47,35 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 py-4 lg:py-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <div className="lg:col-span-8 rounded-2xl overflow-hidden relative h-[280px] lg:h-[340px] bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700">
+            {hero?.background?.url && (
+              <Image
+                src={hero.background.url}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 66vw, 100vw"
+              />
+            )}
             <div className="absolute inset-0 flex items-center px-6 lg:px-12">
               <div className="text-white max-w-lg">
                 <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3 lg:mb-4">
-                  🔥 SIÊU SALE 8.8
+                  🔥 {hero?.tag ?? "SIÊU SALE 8.8"}
                 </span>
                 <h2 className="text-2xl lg:text-4xl font-black mb-2 lg:mb-3 leading-tight">
-                  TAY CẦM GAMING
+                  {hero?.title ?? "TAY CẦM GAMING"}
                   <br />
-                  <span className="text-yellow-400">CHÍNH HÃNG</span> GIÁ TỐT
+                  <span className="text-yellow-400">{hero?.highlight ?? "CHÍNH HÃNG"}</span>{" "}
+                  {hero?.title_suffix ?? "GIÁ TỐT"}
                 </h2>
                 <p className="text-blue-100 mb-4 lg:mb-6 text-xs lg:text-sm">
-                  Freeship toàn quốc • Bảo hành 12 tháng • Đổi trả 7 ngày
+                  {hero?.description ?? "Freeship toàn quốc • Bảo hành 12 tháng • Đổi trả 7 ngày"}
                 </p>
                 <div className="flex gap-3">
                   <Link
-                    href="/san-pham"
+                    href={hero?.cta_link?.url ?? "/san-pham"}
                     className="bg-red-500 hover:bg-red-600 text-white font-bold px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl transition shadow-lg shadow-red-500/30 text-sm"
                   >
-                    Mua ngay →
+                    {hero?.cta_label ?? "Mua ngay"} →
                   </Link>
                   <Link
                     href="/san-pham"
@@ -75,34 +89,47 @@ export default async function HomePage() {
           </div>
 
           <div className="lg:col-span-4 flex lg:flex-col gap-4">
-            <div className="flex-1 rounded-2xl overflow-hidden relative bg-gradient-to-br from-red-500 to-red-600 p-4 lg:p-6 flex flex-col justify-between min-h-[130px]">
-              <div>
-                <span className="text-red-100 text-xs font-bold">ƯU ĐÃI ĐẶC BIỆT</span>
-                <h3 className="text-white text-lg lg:text-xl font-bold mt-1">
-                  GIẢM ĐẾN
-                  <br />
-                  <span className="text-2xl lg:text-3xl">40%</span>
-                </h3>
-              </div>
-              <Link
-                href="/san-pham"
-                className="bg-white text-red-600 font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-lg w-fit hover:bg-gray-100 transition"
+            {(promoBoxes.length > 0
+              ? promoBoxes
+              : [
+                  { tag: "ƯU ĐÃI ĐẶC BIỆT", title: "GIẢM ĐẾN", highlight: "40%", cta_label: "Khám phá", cta_link: null },
+                  { tag: "HÀNG MỚI VỀ", title: "SẢN PHẨM MỚI", highlight: "", cta_label: "Xem ngay", cta_link: null },
+                ]
+            ).map((box, i) => (
+              <div
+                key={i}
+                className={`flex-1 rounded-2xl overflow-hidden relative p-4 lg:p-6 flex flex-col justify-between min-h-[130px] ${
+                  i === 0
+                    ? "bg-gradient-to-br from-red-500 to-red-600"
+                    : "bg-gradient-to-br from-gray-800 to-gray-900"
+                }`}
               >
-                Khám phá →
-              </Link>
-            </div>
-            <div className="flex-1 rounded-2xl overflow-hidden relative bg-gradient-to-br from-gray-800 to-gray-900 p-4 lg:p-6 flex flex-col justify-between min-h-[130px]">
-              <div>
-                <span className="text-gray-300 text-xs font-bold">HÀNG MỚI VỀ</span>
-                <h3 className="text-white text-lg lg:text-xl font-bold mt-1">SẢN PHẨM MỚI</h3>
+                <div>
+                  <span className={`text-xs font-bold ${i === 0 ? "text-red-100" : "text-gray-300"}`}>
+                    {box.tag}
+                  </span>
+                  <h3 className="text-white text-lg lg:text-xl font-bold mt-1">
+                    {box.title}
+                    {box.highlight && (
+                      <>
+                        <br />
+                        <span className="text-2xl lg:text-3xl">{box.highlight}</span>
+                      </>
+                    )}
+                  </h3>
+                </div>
+                <Link
+                  href={box.cta_link?.url ?? "/san-pham"}
+                  className={`font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-lg w-fit transition ${
+                    i === 0
+                      ? "bg-white text-red-600 hover:bg-gray-100"
+                      : "bg-white text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  {box.cta_label} →
+                </Link>
               </div>
-              <Link
-                href="/san-pham"
-                className="bg-white text-gray-900 font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-lg w-fit hover:bg-gray-100 transition"
-              >
-                Xem ngay →
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -244,10 +271,10 @@ export default async function HomePage() {
       <section className="max-w-7xl mx-auto px-4 py-6">
         <div className="bg-gradient-to-r from-blue-800 to-blue-600 rounded-2xl p-6 lg:p-10 text-center">
           <h2 className="text-white text-xl lg:text-2xl font-black mb-2">
-            ĐĂNG KÝ NHẬN ƯU ĐÃI ĐỘC QUYỀN
+            {newsletter?.title ?? "ĐĂNG KÝ NHẬN ƯU ĐÃI ĐỘC QUYỀN"}
           </h2>
           <p className="text-blue-100 text-sm mb-5">
-            Nhận ngay voucher 50k cho đơn hàng đầu tiên khi đăng ký email
+            {newsletter?.description ?? "Nhận ngay voucher 50k cho đơn hàng đầu tiên khi đăng ký email"}
           </p>
           <div className="max-w-md mx-auto">
             <NewsletterForm />

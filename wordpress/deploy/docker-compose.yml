@@ -1,0 +1,81 @@
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: taycamhanoi_mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${WOO_DB_NAME}
+      MYSQL_USER: ${WOO_DB_USER}
+      MYSQL_PASSWORD: ${WOO_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - taycamhanoi_db_data:/var/lib/mysql
+    networks:
+      - internal_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: taycamhanoi_redis
+    restart: unless-stopped
+    networks:
+      - internal_net
+
+  wp_woo:
+    image: wordpress:6.6-apache
+    container_name: taycamhanoi_wp_woo
+    restart: unless-stopped
+    mem_limit: 900m
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_NAME: ${WOO_DB_NAME}
+      WORDPRESS_DB_USER: ${WOO_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WOO_DB_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: ${WOO_TABLE_PREFIX}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_REDIS_HOST', 'redis');
+        define('WP_REDIS_PREFIX', 'woo_site_');
+        define('WP_REDIS_DATABASE', 0);
+        define('WP_MEMORY_LIMIT', '512M');
+        define('WP_HEADLESS_FRONTEND_ORIGIN', '${FRONTEND_ORIGIN}');
+        /* --- Security hardening --- */
+        define('DISALLOW_FILE_EDIT', true);
+        define('FORCE_SSL_ADMIN', true);
+        define('WP_AUTO_UPDATE_CORE', 'minor');
+        define('DISABLE_WP_CRON', true);
+    volumes:
+      - taycamhanoi_wp_content:/var/www/html/wp-content
+      - ./wp-hardening:/var/www/html/wp-content/mu-plugins:ro
+      - ./acf-json:/var/www/html/wp-content/acf-json
+      - ./php-config/custom-php.ini:/usr/local/etc/php/conf.d/zz-custom-php.ini:ro
+    networks:
+      - web
+      - internal_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.taycamhanoi-woo.rule=Host(`${SHOP_DOMAIN}`)"
+      - "traefik.http.routers.taycamhanoi-woo.entrypoints=websecure"
+      - "traefik.http.routers.taycamhanoi-woo.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.taycamhanoi-woo.tls.options=modern@file"
+      - "traefik.http.services.taycamhanoi-woo.loadbalancer.server.port=80"
+      - "traefik.http.routers.taycamhanoi-woo.middlewares=secure-headers@file,login-ratelimit@file"
+
+networks:
+  web:
+    external: true
+  internal_net:
+    driver: bridge
+
+volumes:
+  taycamhanoi_wp_content:
+    external: true
+  taycamhanoi_db_data:

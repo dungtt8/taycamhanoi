@@ -10,3 +10,9 @@ next-env.d.ts
 .DS_Store
 npm-debug.log*
 .worktrees/
+.claude/launch.json
+
+# WP data exports (not code, keep local only)
+wordpress/*.xml
+wordpress/*.csv
+wordpress/acf-homepage-settings.json

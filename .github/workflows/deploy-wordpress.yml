@@ -1,0 +1,35 @@
+name: Deploy WordPress
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "wordpress/deploy/**"
+      - ".github/workflows/deploy-wordpress.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy config files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.WP_VPS_HOST }}
+          username: ${{ secrets.WP_VPS_USER }}
+          key: ${{ secrets.WP_VPS_SSH_KEY }}
+          source: "wordpress/deploy/docker-compose.yml,wordpress/deploy/wp-hardening,wordpress/deploy/php-config"
+          target: "/opt/taycamhanoi-wp"
+          strip_components: 2
+
+      - name: Apply and restart containers
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.WP_VPS_HOST }}
+          username: ${{ secrets.WP_VPS_USER }}
+          key: ${{ secrets.WP_VPS_SSH_KEY }}
+          script: |
+            cd /opt/taycamhanoi-wp
+            docker compose up -d
+            docker compose logs --tail 30 wp_woo

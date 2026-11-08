@@ -47,9 +47,51 @@ export interface WpPage {
   slug: string;
   title: { rendered: string };
   content: { rendered: string };
+  acf?: Record<string, unknown>;
 }
 
 export async function getWpPageBySlug(slug: string): Promise<WpPage | null> {
   const pages = await wpFetch<WpPage[]>("pages", { slug });
   return pages?.[0] ?? null;
+}
+
+export interface HomepageHero {
+  tag: string;
+  title: string;
+  highlight: string;
+  title_suffix: string;
+  description: string;
+  cta_label: string;
+  cta_link: { url: string; title: string } | null;
+  background: { url: string } | null;
+}
+
+export interface HomepagePromoBox {
+  tag: string;
+  title: string;
+  highlight: string;
+  cta_label: string;
+  cta_link: { url: string; title: string } | null;
+}
+
+export interface HomepageNewsletter {
+  title: string;
+  description: string;
+}
+
+export interface HomepageSettings {
+  hero: HomepageHero | null;
+  promo_boxes: HomepagePromoBox[];
+  newsletter: HomepageNewsletter | null;
+}
+
+export async function getHomepageSettings(): Promise<HomepageSettings | null> {
+  const page = await getWpPageBySlug("cai-dat-trang-chu");
+  const acf = page?.acf;
+  if (!acf) return null;
+  return {
+    hero: (acf.hero as HomepageHero) ?? null,
+    promo_boxes: (acf.promo_boxes as HomepagePromoBox[]) ?? [],
+    newsletter: (acf.newsletter as HomepageNewsletter) ?? null,
+  };
 }
