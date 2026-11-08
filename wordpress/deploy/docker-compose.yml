@@ -45,6 +45,8 @@ services:
         define('WP_REDIS_PREFIX', 'woo_site_');
         define('WP_REDIS_DATABASE', 0);
         define('WP_MEMORY_LIMIT', '512M');
+        define('WP_HOME', 'https://${SHOP_DOMAIN}');
+        define('WP_SITEURL', 'https://${SHOP_DOMAIN}');
         define('WP_HEADLESS_FRONTEND_ORIGIN', '${FRONTEND_ORIGIN}');
         /* --- Security hardening --- */
         define('DISALLOW_FILE_EDIT', true);
