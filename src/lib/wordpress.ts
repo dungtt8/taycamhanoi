@@ -83,6 +83,7 @@ export interface HomepageSettings {
   hero: HomepageHero | null;
   promo_boxes: HomepagePromoBox[];
   newsletter: HomepageNewsletter | null;
+  flash_sale_end: string | null;
 }
 
 export async function getHomepageSettings(): Promise<HomepageSettings | null> {
@@ -93,5 +94,6 @@ export async function getHomepageSettings(): Promise<HomepageSettings | null> {
     hero: (acf.hero as HomepageHero) ?? null,
     promo_boxes: (acf.promo_boxes as HomepagePromoBox[]) ?? [],
     newsletter: (acf.newsletter as HomepageNewsletter) ?? null,
+    flash_sale_end: (acf.flash_sale_end as string) ?? null,
   };
 }

@@ -6,15 +6,22 @@ function pad(n: number) {
   return n.toString().padStart(2, "0");
 }
 
-export default function CountdownTimer() {
-  const [seconds, setSeconds] = useState(3 * 3600 + 24 * 60 + 15);
+function secondsUntil(endTime?: string | null) {
+  if (!endTime) return 3 * 3600 + 24 * 60 + 15;
+  const diff = Math.floor((new Date(endTime).getTime() - Date.now()) / 1000);
+  return diff > 0 ? diff : 0;
+}
+
+export default function CountdownTimer({ endTime }: { endTime?: string | null }) {
+  const [seconds, setSeconds] = useState(() => secondsUntil(endTime));
 
   useEffect(() => {
+    setSeconds(secondsUntil(endTime));
     const id = setInterval(() => {
-      setSeconds((s) => (s > 0 ? s - 1 : 0));
+      setSeconds(secondsUntil(endTime));
     }, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [endTime]);
 
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);

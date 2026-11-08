@@ -37,6 +37,7 @@ export default async function HomePage() {
   const hero = homepageSettings?.hero;
   const promoBoxes = homepageSettings?.promo_boxes ?? [];
   const newsletter = homepageSettings?.newsletter;
+  const flashSaleEnd = homepageSettings?.flash_sale_end;
 
   return (
     <>
@@ -164,7 +165,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <h2 className="text-lg lg:text-xl font-black text-gray-900">⚡ FLASH SALE</h2>
-              <CountdownTimer />
+              <CountdownTimer endTime={flashSaleEnd} />
             </div>
             <Link href="/san-pham" className="text-sm font-semibold text-blue-700 hover:underline">
               Xem tất cả →
